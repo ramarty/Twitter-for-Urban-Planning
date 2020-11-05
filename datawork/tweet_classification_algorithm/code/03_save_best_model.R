@@ -1,15 +1,16 @@
 # Save Best Model
 
 # Load Results -----------------------------------------------------------------
-results_df <- read.csv(file.path(data_tweetsalgresults_dir,
+results_df <- read.csv(file.path(tweets_classif_dir,
+                                 "results",
                                  "tweet_classification_results_all_agg.csv"),
                        stringsAsFactors = F)
 
-#results_df <- results_df[results_df$tweet_var %in% "tweet",]
 results_df <- results_df[which.max(results_df$f1_mean),]
 
 # Load Data --------------------------------------------------------------------
-truth_data <- readRDS(file.path(dropbox_file_path, "Data", "Twitter", "Truth Data", "Truth Data All Rounds", "truth_data_all_crashlandmark.Rds"))
+truth_data <- readRDS(file.path(tweets_classif_dir, "data", 
+                                "tweets_truth_for_classification.Rds"))
 
 dfm <- prep_dfm(truth_data, results_df)
 
@@ -27,6 +28,6 @@ if(results_df$model_type %in% "svm"){
 } 
 
 # Export -----------------------------------------------------------------------
-saveRDS(model, file.path(data_tweetsalgresults_dir, "tweet_classification_best_model.Rds"))
-saveRDS(results_df, file.path(data_tweetsalgresults_dir, "tweet_classification_best_model_parameters.Rds"))
+saveRDS(model, file.path(tweets_classif_dir, "model", "tweet_classification_best_model.Rds"))
+saveRDS(results_df, file.path(tweets_classif_dir, "model", "tweet_classification_best_model_parameters.Rds"))
 

@@ -1,5 +1,5 @@
 # Download GADM
 
-setwd(file.path(data_gadm_dir, "gadm"))
+setwd(file.path(gadm_dir, "data"))
 ken_adm_1 <- getData('GADM', country='KEN', level=1)
 

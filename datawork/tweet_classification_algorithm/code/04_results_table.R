@@ -3,8 +3,10 @@
 ROUND <- 3
 
 # Load Data --------------------------------------------------------------------
-results_df <- read.csv(file.path(data_tweetsalgresults_dir,
-                                "tweet_classification_results_all_agg.csv"))
+results_df <- read.csv(file.path(tweets_classif_dir,
+                                 "results",
+                                 "tweet_classification_results_all_agg.csv"),
+                       stringsAsFactors = F)
 
 # Table ------------------------------------------------------------------------
 results_sub <- results_df %>%

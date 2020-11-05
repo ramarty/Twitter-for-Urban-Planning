@@ -2,10 +2,10 @@
 
 # Load Data --------------------------------------------------------------------
 #### Tweets
-tweet_df <- readRDS(file.path(data_tweets_dir, "processed_data", "tweets_classified_geoparsed.Rds"))
+tweet_df <- readRDS(file.path(tweets_all_dir, "data", "processed_data", "tweets_classified_geoparsed.Rds"))
 
 #### Landmark
-landmarks <- readRDS(file.path(data_landmarkgaz_dir, "processed_data", "landmark_gazetter_aug.Rds"))
+landmarks <- readRDS(file.path(landmarkgaz_dir, "data", "gazetteers", "landmark_gazetter_aug.Rds"))
 landmarks <- spTransform(landmarks, CRS(NAIROBI_UTM_PROJ))
 
 # Prep Tweet Data --------------------------------------------------------------
@@ -21,7 +21,7 @@ tweet_df <- tweet_df %>%
   filter(dist <= 0.5) %>%
   
   # Filter to ones where only one landmark used
-  filter(!grepl(";", matched_words_correct_spelling)) # %>%
+  filter(!grepl(";", matched_words_correct_spelling))
   # filter(type %in% "landmark")
 
 coordinates(tweet_df) <- ~longitude_truth + latitude_truth

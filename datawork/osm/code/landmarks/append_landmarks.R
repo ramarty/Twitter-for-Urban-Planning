@@ -14,7 +14,6 @@ read_remove_na <- function(dataset){
   df <- df@data
   df <- cbind(df, df_coordinates)
   
-  print(names(df))
   return(df)
 }
 

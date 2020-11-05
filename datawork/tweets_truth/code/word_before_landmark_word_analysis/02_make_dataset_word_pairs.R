@@ -7,11 +7,10 @@
 # Load Data --------------------------------------------------------------------
 # Restrict to observations included in the truth dataset and where we know how the
 # landmark used to geocode the tweet was written in the tweet.
-truth_data_alg <- readRDS(file.path(data_tweets_dir, 
-                                    "processed_data",
-                                    "tweets_truth_clean.Rds"))
+truth_data_alg <- readRDS(file.path(tweets_truth_dir, "data", "processed_data",
+                                    "word_before_landmark_word_data",
+                                    "tweets_truth_word_b4_landmark.Rds"))
 truth_data_alg <- truth_data_alg[!is.na(truth_data_alg$ngram1_1beforelandmark),]
-#truth_data_alg <- truth_data_alg[!is.na(truth_data_alg$latitude_truth),]
 
 # Remove roads
 rm_roads <- c("road", "rd", "street", "st", "way", "avenue", "ave")
@@ -107,12 +106,14 @@ results_all_df <- bind_rows(results_df,
                             results_df_12swap)
 
 # Export -----------------------------------------------------------------------
-saveRDS(results_all_df, file.path(data_tweets_dir, 
+saveRDS(results_all_df, file.path(tweets_truth_dir, "data", 
                                   "processed_data",
+                                  "word_before_landmark_word_data",
                                   "tweets_word_pairs.Rds"))
 
-saveRDS(top_words, file.path(data_tweets_dir, 
+saveRDS(top_words, file.path(tweets_truth_dir, "data", 
                              "processed_data",
+                             "word_before_landmark_word_data",
                              "words_before_landmarks.Rds"))
 
 

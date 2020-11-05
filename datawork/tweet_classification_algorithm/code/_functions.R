@@ -1,76 +1,95 @@
-# Classify potentially crash related tweets
+# Calculate Performance --------------------------------------------------------
+calc_performance <- function(pred, truth){
+  # Given vectors of predictions and truth data, calculate recall, precision,
+  # accuracy and f1 stat
+  
+  recall <- sum((truth %in% T) & (pred %in% T)) / sum(truth %in% T)
+  precision <- sum((truth %in% T) & (pred %in% T)) / sum(pred %in% T)
+  accuracy <- mean(truth == pred)
+  f1 <- (2 * precision * recall) / (precision + recall)
+  
+  df_out <- data.frame(recall = recall,
+                       precision = precision,
+                       accuracy = accuracy,
+                       f1 = f1)
+  
+  return(df_out)
+}
 
-fuzzy_match <- function(tweet, words, maxDist){
-  if(nchar(tweet) >= 2){
-    tweet_words <- ngram::ngram_asweka(tweet, min=1, max=1) 
-    contains_accident_word <- TRUE %in% ain(tweet_words, words, maxDist=maxDist)
-  } else{
-    contains_accident_word <- FALSE
+# Prep DFM ---------------------------------------------------------------------
+prep_dfm <- function(df, params_df){
+  # Prep dfm based on parameters
+  
+  dfm <- tokens(x=df[[params_df$tweet_var]], what="word") %>%
+    tokens_ngrams(n=1:params_df$ngram_max, conc=" ") %>%
+    dfm(tolower=T) %>%
+    dfm_trim(min_docfreq=0.0002, docfreq_type = "prop")  %>% # always take out super few
+    dfm_trim(min_docfreq=params_df$trim, docfreq_type = "prop")  %>%
+    dfm_trim(max_docfreq=(1-params_df$trim), docfreq_type = "prop") 
+  
+  if(params_df$tfid %in% "TRUE"){
+    dfm <- dfm_tfidf(dfm)
   }
-  return(contains_accident_word)
+  
+  return(dfm)
 }
 
-class_potnt_crash <- function(text){
+# Grid Search: DFM Based Input -------------------------------------------------
+grid_search_with_dfm <- function(params, model_type){
   
-  text_df <- text %>%
-    as.data.frame() %>%
-    dplyr::rename(text = ".")
-  text_df$text <- text_df$text %>% as.character()
+  # Loop through parameters - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  results_all_df <- lapply(params$model, function(model_i){
+    
+    print(model_i)
+    
+    #### Prep DFM
+    params_i <- params[model_i,]
+    dfm <- prep_dfm(truth_data, params_i)
+    
+    # Loop through folds - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    results_df <- lapply(1:K_FOLDS, function(fold_i){
+      
+      if(model_type %in% "svm"){
+        model <- textmodel_svm(x=dfm[k_fold != fold_i,], 
+                               y=truth_data$accident_truth[k_fold != fold_i], 
+                               weight=params_i$prior,
+                               cost = params_i$svm_cost)
+        
+      } else if(model_type %in% "nb"){
+        model <- textmodel_nb(x=dfm[k_fold != fold_i,], 
+                              y=truth_data$accident_truth[k_fold != fold_i], 
+                              prior=params_i$prior)
+        
+      } 
+      
+      predictions <- predict(model, newdata = dfm[k_fold == fold_i,], type="class") %>% as.vector()
+      truth <- truth_data$accident_truth[k_fold == fold_i]
+      
+      predictions <- (predictions %in% "TRUE")
+      
+      df_out <- calc_performance(predictions,
+                                 truth)
+      df_out$fold <- fold_i
+      
+      return(df_out)
+    }) %>%
+      bind_rows()
+    
+    # Add parameters to results dataframe - - - - - - - - - - - - - - - - - - - -
+    for(var in names(params_i)) results_df[[var]] <- params_i[[var]]
+    results_df$model_type <- model_type
+    
+    # saveRDS(results_df,
+    #         file.path(dropbox_file_path, "Data", "Twitter",
+    #                   "Tweet Classification Geocoding Algorithm",
+    #                   "tweet_classification",
+    #                   "results",
+    #                   "individual_files",
+    #                   paste0(model_type, model_i, ".Rds")))
+    
+    return(results_df)
+  }) %>%
+    bind_rows()
   
-  # Search for words (space before/after)
-  accident_words <- c("accident",
-                      "accidents",
-                      "wreckage",
-                      "wreck",
-                      "collision",
-                      "crash",
-                      "crashs",
-                      "crashes",
-                      "ajali",
-                      "magari zmegongana",
-                      "zimecrash",
-                      "zilicrash",
-                      "disaster",
-                      "hazard",
-                      "pileup",
-                      "fender-bender",
-                      "fender bender",
-                      "smash",
-                      "smashed",
-                      "axident",
-                      "fatality",
-                      "mishap",
-                      "injuries",
-                      "injury",
-                      "incident",
-                      "incidents",
-                      "emergency",
-                      "hit",
-                      "fatal",
-                      "damage",
-                      "hit-and-run",
-                      "overturn",
-                      "overturned",
-                      "ovrturn",
-                      "ovrturned",
-                      "rolled",
-                      "roll",
-                      "read end",
-                      "rear ended",
-                      "rammed",
-                      "crush",
-                      "crushed")
-  accident_words <- paste0("\\b", accident_words, "\\b") %>% paste(collapse = "|") 
-  
-  text_df$potentially_accident_related_exact <- str_detect(text_df$text, accident_words)
-  text_df$potentially_accident_related_char_exact <- grepl("accident|acident|incident|axident|crash|collision|pileup|wreck|smash|\\bhit\\b|\\bhits\\b|knock|collide|injury|fatality|injuries|fatalities|overturn|damage|hit-and-run|fender bender|fender-bender", text_df$text)
-  
-  text_df$potentially_accident_related_fuzzy_1 <- lapply(text_df$text,fuzzy_match, c("accident","incident"), 2) %>% unlist
-  text_df$potentially_accident_related_fuzzy_2 <- lapply(text_df$text,fuzzy_match, c("crash"), 1) %>% unlist
-  
-  text_df$potentially_accident_related <- text_df$potentially_accident_related_exact | text_df$potentially_accident_related_char_exact | text_df$potentially_accident_related_fuzzy_1 | text_df$potentially_accident_related_fuzzy_2
-  
-  return(text_df$potentially_accident_related)
+  return(results_all_df)
 }
-
-

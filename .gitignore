@@ -74,6 +74,9 @@
 # Png
 !/**/*.png
 
+# Png
+!/**/*.pdf
+
 # Docker
 !/**/*.yml
 !/**/docker/*

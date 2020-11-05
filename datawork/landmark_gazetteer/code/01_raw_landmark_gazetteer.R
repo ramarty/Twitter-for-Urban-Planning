@@ -1,9 +1,9 @@
 # Append Files for Raw Gazetteer
 
 # Load Data --------------------------------------------------------------------
-googleplaces <- readRDS(landmark.df, file.path(google_places_dir, "data", "google_places.Rds"))
+googleplaces <- readRDS(file.path(google_places_dir, "data", "google_places.Rds"))
 geonames     <- readRDS(file.path(geonames_dir, "data", "processed_data", "geonames_nairobi.Rds"))
-osm <- readRDS(file.path(osm_dir, "data", "processed_data", "landmarks", "osm_landmarks.Rds"))
+osm          <- readRDS(file.path(osm_dir, "data", "processed_data", "landmarks", "osm_landmarks.Rds"))
 
 landmarks_all <- bind_rows(googleplaces, osm, geonames)
 landmarks_all <- unique(landmarks_all)
