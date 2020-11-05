@@ -5,6 +5,13 @@ crashes_sdf <- readRDS(file.path(tweets_truth_dir, "data", "processed_data",
                                  "crash_cluster_analysis", 
                                  "tweets_truth_uniquecrash.Rds"))
 
+# Restrict to Nairobi ----------------------------------------------------------
+kenya <- readRDS(file.path(gadm_dir, "data", "gadm36_KEN_1_sp.rds"))
+nairobi <- kenya[kenya$NAME_1 %in% "Nairobi",]
+
+crashes_sdf <- crashes_sdf[over(crashes_sdf, nairobi)$NAME_1 %in% "Nairobi",]
+
+# Project ----------------------------------------------------------------------
 crashes_sdf <- spTransform(crashes_sdf, CRS(NAIROBI_UTM_PROJ))
 
 # Grab centroid and make dataframe ---------------------------------------------

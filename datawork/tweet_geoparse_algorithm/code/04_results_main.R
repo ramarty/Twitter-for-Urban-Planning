@@ -45,7 +45,7 @@ cat(round(results_df$clstr_precision[results_df$type %in% "aug"], ROUND), " \\\\
 
 cat("\\hline ")
 
-cat("\\multicolumn{5}{p{8cm}}{`N Crashes' refers to the number of correctly 
+cat("\\multicolumn{5}{p{11cm}}{`N Crashes' refers to the number of correctly 
     identified crashes. `Raw Gaz' refers to the raw gazetteer (ie, dictionary of 
     landmarks with original names) and `Aug Gaz' refers to the augmented gazetteer. 
     We use our raw gazetteer as an input into LNEX, which implements its own augmentation
