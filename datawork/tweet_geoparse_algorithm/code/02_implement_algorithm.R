@@ -1,0 +1,95 @@
+# Crashmap Algorithm
+
+# Load Data --------------------------------------------------------------------
+## Tweets
+tweets_df <- readRDS(file.path(data_tweets_dir, "processed_data", "tweets_for_geolocation.Rds"))
+
+## Roads and Estates
+roads <- readRDS(file.path(data_roadgaz_dir, "processed_data", "osm_roads_aug.Rds"))
+
+estates <- readRDS(file.path(data_estates_dir, "nairobi_estates.Rds"))
+
+# Parameters -----------------------------------------------------------------
+prepositions <- list(c("EVENT_WORD after", "EVENT_WORD near", "EVENT_WORD outside", 
+                       "EVENT_WORD past", "around", "hapo", "just after", "just before", 
+                       "just past", "near", "next to", "opposite", "outside", "past", 
+                       "you approach", "apa", "apo", "hapa", "right after", 
+                       "right before", "right past", "just before you reach"), 
+                     c("EVENT_WORD at", "before"), 
+                     c("after"),
+                     c("at",
+                       "happened at", "at the", "pale"), 
+                     c("between", "from",
+                       "btw", "btwn"), 
+                     c("along", "approach", "in", "on", "opp", "to", "towards",
+                       "toward") 
+)
+
+event <- c("accidents", "accident", "crash", "crush", "overturn", "overturned", 
+           "collision", "wreck", "wreckage", "pile up", "pileup", "incident", 
+           "hit and run", "hit", "roll", "rolled", "read end", "rear ended")
+junction <- c("intersection", "junction")
+false_positive <- c("githurai bus", "githurai matatu", 
+                    "githurai 45 bus", "githurai 45 matatu",
+                    "city hoppa bus", "hoppa bus",
+                    "rongai bus", "rongai matatu", "rongai matatus",
+                    "machakos bus", "machakos minibus", "machakos matatu",
+                    "at ntsa kenya", 
+                    "service lane", "star bus",
+                    "prius", "mpya bus",
+                    "heading towards") 
+type_list <- list(c("bus_station","transit_station","stage_added", "stage", "bus_stop"),
+                  c("mall", "shopping_mall"),
+                  c("restaurant", "bakery", "cafe"),
+                  c("building"),
+                  c("parking"))
+
+# Locate Crashes ---------------------------------------------------------------
+for(gaz_type in c("aug", "aug_geonames", "aug_google", "aug_osm", "raw")){
+  
+  landmarks <- readRDS(file.path(data_landmarkgaz_dir, "processed_data", 
+                                 paste0("landmark_gazetter_",gaz_type,".Rds")))
+  
+  alg_out_sf <- locate_event(text = tweets_df$tweet,
+                             landmark_gazetteer = landmarks, 
+                             roads = roads, 
+                             areas = estates, 
+                             prepositions_list = prepositions, 
+                             prep_check_order = "prep_then_pattern", # prep_then_pattern
+                             event_words = event, 
+                             junction_words = junction, 
+                             false_positive_phrases = false_positive, 
+                             type_list = type_list, 
+                             clost_dist_thresh = 500,
+                             fuzzy_match = TRUE,
+                             fuzzy_match.min_word_length = c(5,11),
+                             fuzzy_match.dist = c(1,2),
+                             fuzzy_match.ngram_max = 3,
+                             fuzzy_match.first_letters_same = TRUE,
+                             fuzzy_match.last_letters_same = TRUE,
+                             crs_distance = "+init=epsg:21037", 
+                             crs_out = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
+                             quiet = F,
+                             mc_cores = 1)
+  
+  # Prep Outputs -----------------------------------------------------------------
+  # Restrict to points and add to tweets
+  alg_out_sf$status_id_str <- tweets_df$status_id_str
+  alg_out_sf$geometry_type <- alg_out_sf$geometry %>% st_geometry_type() %>% as.character()
+  alg_out_sf$geometry_dim <- alg_out_sf$geometry %>% st_dimension()
+  
+  alg_out_df <- alg_out_sf %>%
+    filter(geometry_type %in% "POINT") %>%
+    filter(!is.na(geometry_dim)) %>%
+    dplyr::select(-text) %>%
+    as("Spatial") %>%
+    as.data.frame() %>%
+    dplyr::rename(lon_alg = coords.x1,
+                  lat_alg = coords.x2)
+  
+  tweets_df <- merge(tweets_df, alg_out_df, by="status_id_str", all.x=T)
+  
+  # Export -----------------------------------------------------------------------
+  saveRDS(tweets_df, file.path(data_tweets_georesults_dir, paste0("tweet_geoparse_gaz_",gaz_type,".Rds")))
+}
+
