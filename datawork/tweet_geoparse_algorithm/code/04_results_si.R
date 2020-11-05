@@ -1,4 +1,5 @@
-# Algorithm Results: Main Table
+# Geoparse Tweets
+# Table for supplementary information
 
 ROUND <- 3
 

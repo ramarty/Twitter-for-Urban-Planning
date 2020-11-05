@@ -1,4 +1,5 @@
-# Illustrate Algorithm
+# Geoparse Tweets
+# Illustrate algorithm
 
 #### Parameters
 height = 2.5 
