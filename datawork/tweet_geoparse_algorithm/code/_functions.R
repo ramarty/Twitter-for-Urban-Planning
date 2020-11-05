@@ -54,6 +54,13 @@ spread_coords <- function(df,
 }
 
 prep_alg_data <- function(df, type_name){
+  # Preps algorithm data. The algorithm output contains a variable which includes
+  # coordinates of all landmarks found and an additional variable of all
+  # road intersections found. This function creates a long dataframe, where
+  # each row is one of those coordinates.
+  # PARAMS
+    # df: dataframe from algorithm
+    # type_name: string. Functions adds variable "type" with this text
   
   ## Alg Coordinates
   df_alg <- df %>%
