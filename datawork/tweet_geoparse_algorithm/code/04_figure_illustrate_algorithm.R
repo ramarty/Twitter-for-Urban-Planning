@@ -8,8 +8,9 @@ height_2 = 1.9
 width_2 = 3
 
 # Load Data --------------------------------------------------------------------
-roads <- readRDS(file.path(data_roadgaz_dir, "processed_data", "osm_roads_aug.Rds"))
-landmarks_df <- readRDS(file.path(data_landmarkgaz_dir, "processed_data", "landmark_gazetter_aug.Rds")) %>%
+roads <- readRDS(file.path(osm_dir, "data", "processed_data", "roads", "osm_roads_aug.Rds"))
+landmarks_df <- readRDS(file.path(landmarkgaz_dir, "data", "gazetteers", 
+                                  "landmark_gazetter_aug.Rds")) %>%
   as.data.frame() %>%
   mutate(name = name %>% as.character())
 

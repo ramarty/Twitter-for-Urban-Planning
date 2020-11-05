@@ -1,7 +1,7 @@
 # Summary Statics of Clusters from Twitter
 
 # Load Data --------------------------------------------------------------------
-tweets_df <- readRDS(file.path(data_tweets_dir, "processed_data", "tweets_truth_clean.Rds"))
+tweets_df <- readRDS(file.path(tweets_truth_dir, "data", "raw_data", "tweets_truth.Rds"))
 tweets_df <- tweets_df %>%
   filter(!is.na(latitude_truth),
          !is.na(longitude_truth))

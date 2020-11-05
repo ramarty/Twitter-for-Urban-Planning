@@ -3,7 +3,7 @@
 ROUND <- 3
 
 # Load Data --------------------------------------------------------------------
-results_df <- readRDS(file.path(data_tweets_georesults_dir, "tweet_geoparse_results.Rds"))
+results_df <- readRDS(file.path(tweets_geoparse_dir, "results", "tweet_geoparse_results.Rds"))
 
 # Table ------------------------------------------------------------------------
 sink(file.path(tables_dir, "table_1.tex"))

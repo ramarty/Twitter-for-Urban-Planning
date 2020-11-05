@@ -2,12 +2,11 @@
 
 # Load Data --------------------------------------------------------------------
 ## Tweets
-tweets_df <- readRDS(file.path(data_tweets_dir, "processed_data", "tweets_for_geolocation.Rds"))
+tweets_df <- readRDS(file.path(tweets_geoparse_dir, "processed_data", "tweets_for_geolocation.Rds"))
 
 ## Roads and Estates
-roads <- readRDS(file.path(data_roadgaz_dir, "processed_data", "osm_roads_aug.Rds"))
-
-estates <- readRDS(file.path(data_estates_dir, "nairobi_estates.Rds"))
+roads <- readRDS(file.path(osm_dir, "data", "processed_data", "roads", "osm_roads_aug.Rds"))
+estates <- readRDS(file.path(estates_dir, "data", "nairobi_estates.Rds"))
 
 # Parameters -----------------------------------------------------------------
 prepositions <- list(c("EVENT_WORD after", "EVENT_WORD near", "EVENT_WORD outside", 
@@ -47,7 +46,7 @@ type_list <- list(c("bus_station","transit_station","stage_added", "stage", "bus
 # Locate Crashes ---------------------------------------------------------------
 for(gaz_type in c("aug", "aug_geonames", "aug_google", "aug_osm", "raw")){
   
-  landmarks <- readRDS(file.path(data_landmarkgaz_dir, "processed_data", 
+  landmarks <- readRDS(file.path(landmarkgaz_dir, "data", "gazetteers",
                                  paste0("landmark_gazetter_",gaz_type,".Rds")))
   
   alg_out_sf <- locate_event(text = tweets_df$tweet,
@@ -90,6 +89,6 @@ for(gaz_type in c("aug", "aug_geonames", "aug_google", "aug_osm", "raw")){
   tweets_df <- merge(tweets_df, alg_out_df, by="status_id_str", all.x=T)
   
   # Export -----------------------------------------------------------------------
-  saveRDS(tweets_df, file.path(data_tweets_georesults_dir, paste0("tweet_geoparse_gaz_",gaz_type,".Rds")))
+  saveRDS(tweets_df, file.path(tweets_geoparse_dir, "processed_data", paste0("tweet_geoparse_gaz_",gaz_type,".Rds")))
 }
 

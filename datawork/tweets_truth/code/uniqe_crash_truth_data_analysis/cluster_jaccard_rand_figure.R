@@ -1,8 +1,10 @@
 # Optimize Clustering Stats: Table fo Results
 
 # Load Data --------------------------------------------------------------------
-results_all <- readRDS(file.path(data_tweets_dir, 
+results_all <- readRDS(file.path(tweets_truth_dir, 
+                                 "data",
                                  "processed_data",
+                                 "uniqe_crash_truth_data_analysis",
                                  "clustering_eval_jaccard_rand_results.Rds"))
 
 

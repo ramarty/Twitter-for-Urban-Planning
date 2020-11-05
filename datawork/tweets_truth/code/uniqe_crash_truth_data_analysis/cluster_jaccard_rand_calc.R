@@ -1,13 +1,7 @@
 # Optimize Clustering Stats
 
-# https://www.rdocumentation.org/packages/flexclust/versions/1.4-0/topics/randIndex
-
-library(ClusterR)
-library(aricode)
-#library(clusteval)
-
 # Load Data --------------------------------------------------------------------
-tweets_df <- readRDS(file.path(data_tweets_dir, "processed_data", "tweets_truth_clean.Rds"))
+tweets_df <- readRDS(file.path(tweets_truth_dir, "data", "raw_data", "tweets_truth.Rds"))
 tweets_df <- tweets_df %>%
   filter(!is.na(latitude_truth),
          !is.na(longitude_truth))
@@ -15,10 +9,6 @@ tweets_df <- tweets_df %>%
 ## Prep cluster var
 tweets_df$crash_cluster_id_v1 <- tweets_df$crash_cluster_id_v1 %>% str_squish() %>% as.numeric()
 tweets_df$crash_cluster_id_v2 <- tweets_df$crash_cluster_id_v2 %>% str_squish() %>% as.numeric()
-
-## Split into two datasets
-# tweets_df1 <- tweets_df[!is.na(tweets_df$crash_cluster_id_v1),]
-# tweets_df2 <- tweets_df[!is.na(tweets_df$crash_cluster_id_v2),]
 
 ## Split into two datasets
 tweets_df1 <- tweets_df %>%
@@ -54,19 +44,14 @@ for(hour in c(1,2,4,12,24)){
                                     tweets_df$cluster_id_alg,
                                     similarity = c("jaccard"),
                                     method = "independence")
-      #nid <- NID(tweets_df$cluster_id, 
-      #           tweets_df$cluster_id_alg)
+
       ari <- ARI(tweets_df$cluster_id, 
                  tweets_df$cluster_id_alg)
-      
-      #comPart(x, y, type=c("ARI","RI","J","FM"))
-      
+    
       results_i <- data.frame(dataset = dataset,
                               hour = hour,
                               km = km,
-                              #rand = rand,
                               jaccard = jaccard,
-                              #nid = nid,
                               ari = ari)
       
       results_all <- bind_rows(results_all, results_i)
@@ -76,8 +61,10 @@ for(hour in c(1,2,4,12,24)){
 }
 
 # Export -----------------------------------------------------------------------
-saveRDS(results_all, file.path(data_tweets_dir, 
+saveRDS(results_all, file.path(tweets_truth_dir, 
+                               "data",
                                "processed_data",
+                               "uniqe_crash_truth_data_analysis",
                                "clustering_eval_jaccard_rand_results.Rds"))
 
 

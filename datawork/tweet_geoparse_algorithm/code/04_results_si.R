@@ -3,7 +3,7 @@
 ROUND <- 3
 
 # Load Data --------------------------------------------------------------------
-results_df <- readRDS(file.path(data_tweets_georesults_dir, "tweet_geoparse_results.Rds"))
+results_df <- readRDS(file.path(tweets_geoparse_dir, "results", "tweet_geoparse_results.Rds"))
 
 # Prep Variables ---------------------------------------------------------------
 results_df$order <- NA

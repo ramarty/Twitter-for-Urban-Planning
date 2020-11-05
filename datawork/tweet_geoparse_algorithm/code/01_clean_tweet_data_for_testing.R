@@ -1,7 +1,7 @@
 # Crashmap Algorithm
 
 # Load Data --------------------------------------------------------------------
-tweets_df <- readRDS(file.path(tweets_all_dir, "raw_data", "tweets.Rds"))
+tweets_df <- readRDS(file.path(tweets_all_dir, "data", "raw_data", "tweets.Rds"))
 
 tweets_df <- tweets_df %>%
   filter(accident_truth %in% T,
@@ -78,7 +78,7 @@ tweets_df$tweet <- tweets_df$tweet %>%
   # Squish strings. Should be last thing done
   str_squish()
 
-# Just in case?
+# Remove short tweets
 tweets_df <- tweets_df[nchar(tweets_df$tweet) >= 3,]
 
 # Export ------------------------------------------------------------------  

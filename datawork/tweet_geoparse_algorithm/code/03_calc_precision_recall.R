@@ -2,11 +2,11 @@
 
 # 1. Tweets to Long ============================================================
 ## Load Tweets
-df_aug          <- readRDS(file.path(data_tweets_georesults_dir, "tweet_geoparse_gaz_aug.Rds"))
-df_raw          <- readRDS(file.path(data_tweets_georesults_dir, "tweet_geoparse_gaz_raw.Rds"))
-df_aug_geonames <- readRDS(file.path(data_tweets_georesults_dir, "tweet_geoparse_gaz_aug_geonames.Rds"))
-df_aug_google   <- readRDS(file.path(data_tweets_georesults_dir, "tweet_geoparse_gaz_aug_google.Rds"))
-df_aug_osm      <- readRDS(file.path(data_tweets_georesults_dir, "tweet_geoparse_gaz_aug_osm.Rds"))
+df_aug          <- readRDS(file.path(tweets_geoparse_dir, "processed_data", "tweet_geoparse_gaz_aug.Rds"))
+df_raw          <- readRDS(file.path(tweets_geoparse_dir, "processed_data", "tweet_geoparse_gaz_raw.Rds"))
+df_aug_geonames <- readRDS(file.path(tweets_geoparse_dir, "processed_data", "tweet_geoparse_gaz_aug_geonames.Rds"))
+df_aug_google   <- readRDS(file.path(tweets_geoparse_dir, "processed_data", "tweet_geoparse_gaz_aug_google.Rds"))
+df_aug_osm      <- readRDS(file.path(tweets_geoparse_dir, "processed_data", "tweet_geoparse_gaz_aug_osm.Rds"))
 
 ## Data to Long
 df_aug          <- df_aug %>% prep_alg_data(type_name = "aug")
@@ -23,7 +23,7 @@ df_alg <- bind_rows(df_aug,
                     df_aug_geonames)
 
 # 2. Load / Prep LNEx ----------------------------------------------------------
-df_lnex <- read.csv(file.path(data_tweets_georesults_dir, "tweet_geoparse_lnex.csv"),
+df_lnex <- read.csv(file.path(tweets_geoparse_dir, "processed_data", "tweet_geoparse_lnex.csv"),
                     stringsAsFactors = F) %>% 
   dplyr::select(status_id_str, lat, lon) %>%
   group_by(status_id_str) %>%
@@ -92,4 +92,4 @@ clstr_prec_rec_df <- lapply(unique(df_all_twt$type),
 results_all <- merge(twt_prec_rec_df, clstr_prec_rec_df, by = "type")
 
 ## Export
-saveRDS(results_all, file.path(data_tweets_georesults_dir, "tweet_geoparse_results.Rds"))
+saveRDS(results_all, file.path(tweets_geoparse_dir, "results", "tweet_geoparse_results.Rds"))
