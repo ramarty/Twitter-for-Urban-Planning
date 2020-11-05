@@ -14,3 +14,6 @@ sendy_df$verified_crash <- sendy_df$observe_crash %in% "Crash There" | sendy_df$
 nrow(sendy_df) # Total Observations
 mean(sendy_df$verified_crash) # Proportion crash verified
 
+table(sendy_df$observe_crash) / nrow(sendy_df)
+table(sendy_df$why_no_crash) / nrow(sendy_df)
+

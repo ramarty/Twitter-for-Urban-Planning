@@ -1,8 +1,10 @@
 # Patterns of words/phrases that come before location word
 
 # Load Data --------------------------------------------------------------------
-top_words <- readRDS(file.path(data_tweets_dir, 
+top_words <- readRDS(file.path(tweets_truth_dir, 
+                               "data",
                                "processed_data",
+                               "word_before_landmark_word_data",
                                "words_before_landmarks.Rds"))
 
 top_words <- top_words[top_words$N >= 20,]

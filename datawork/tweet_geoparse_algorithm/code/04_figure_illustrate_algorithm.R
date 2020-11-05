@@ -9,10 +9,10 @@ width_2 = 3
 
 # Load Data --------------------------------------------------------------------
 roads <- readRDS(file.path(osm_dir, "data", "processed_data", "roads", "osm_roads_aug.Rds"))
-landmarks_df <- readRDS(file.path(landmarkgaz_dir, "data", "gazetteers", 
-                                  "landmark_gazetter_aug.Rds")) %>%
-  as.data.frame() %>%
-  mutate(name = name %>% as.character())
+landmarks <- readRDS(file.path(landmarkgaz_dir, "data", "gazetteers", 
+                               "landmark_gazetter_aug.Rds")) 
+
+landmarks_df <- landmarks %>% as.data.frame()
 
 # A. All locations -------------------------------------------------------------
 exnt <- landmarks[(landmarks$name %in% "kianda") | 
@@ -32,7 +32,7 @@ ggplot() +
   ylim(exnt@ymin, exnt@ymax) + 
   theme_void() +
   coord_quickmap()  +
-ggsave(file.path(figures_dir, "figure_1a.png"), height = height, width = width)
+  ggsave(file.path(figures_dir, "figure_1a.png"), height = height, width = width)
 
 # B. All landmarks with kinda --------------------------------------------------
 ggplot() +
@@ -46,7 +46,7 @@ ggplot() +
   ylim(exnt@ymin, exnt@ymax) + 
   theme_void() +
   coord_quickmap()  +
-ggsave(file.path(figures_dir, "figure_1b.png"), height = height, width = width)
+  ggsave(file.path(figures_dir, "figure_1b.png"), height = height, width = width)
 
 ## Landmark Examples
 landmarks_df$name[grepl("kianda", landmarks_df$name)] %>% unique %>% sort()
@@ -78,7 +78,7 @@ ggplot() +
   ylim(exnt@ymin, exnt@ymax) + 
   theme_void() +
   coord_quickmap()  +
-ggsave(file.path(figures_dir, "figure_1c.png"), height = height_2, width = width_2)
+  ggsave(file.path(figures_dir, "figure_1c.png"), height = height_2, width = width_2)
 
 ## Landmark Examples
 lnd_nr_rd_df$name[grepl("kianda", lnd_nr_rd_df$name)] %>% unique %>% sort()
@@ -101,7 +101,7 @@ ggplot() +
   ylim(exnt@ymin, exnt@ymax) + 
   theme_void() +
   coord_quickmap()  +
-ggsave(file.path(figures_dir, "figure_1d.png"), height = height_2, width = width_2)
+  ggsave(file.path(figures_dir, "figure_1d.png"), height = height_2, width = width_2)
 
 # E. All Crash Reports ---------------------------------------------------------
 lnd_nr_rd_c_df$name <- "kianda"
@@ -121,11 +121,11 @@ ggplot() +
   geom_point(aes(x = 36.758419, y =  -1.263912), fill = "seagreen3", color = "black", size=5, pch = 21) +
   geom_point(data=crashes_all, 
              aes(x=x, y=y), color = "black", fill = "purple", pch = 21, size=2) +
-  xlim(exnt@xmin + restrct, exnt@xmax- restrct) + 
+  xlim(exnt@xmin, exnt@xmax) + 
   ylim(exnt@ymin - .01/111.12, exnt@ymax + .01/111.12) + 
   theme_void() +
   coord_quickmap()  +
-ggsave(file.path(figures_dir, "figure_1e.png"), height = height_2, width = width_2)
+  ggsave(file.path(figures_dir, "figure_1e.png"), height = height_2, width = width_2)
 
 # F. Crash ---------------------------------------------------------------------
 crashes_all_c <- crashes_all %>%
@@ -141,11 +141,11 @@ ggplot() +
   geom_point(aes(x = 36.758419, y =  -1.263912), fill = "seagreen3", color = "black", size=5, pch = 21) +
   geom_point(data=crashes_all_c, 
              aes(x=x, y=y), color = "black", fill = "purple", pch = 21, size=2) +
-  xlim(exnt@xmin + restrct, exnt@xmax- restrct) + 
+  xlim(exnt@xmin, exnt@xmax) + 
   ylim(exnt@ymin - .01/111.12, exnt@ymax + .01/111.12) + 
   theme_void() +
   coord_quickmap() +
-ggsave(file.path(figures_dir, "figure_1f.png"), height = height_2, width = width_2)
+  ggsave(file.path(figures_dir, "figure_1f.png"), height = height_2, width = width_2)
 
 
 

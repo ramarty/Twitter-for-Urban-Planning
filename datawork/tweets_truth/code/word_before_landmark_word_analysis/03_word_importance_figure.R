@@ -1,10 +1,11 @@
 # Patterns of words/phrases that come before location word
 
 # Load Data --------------------------------------------------------------------
-results_all_df <- readRDS(file.path(tweets_truth_dir, "data", 
-                                  "processed_data",
-                                  "word_before_landmark_word_data",
-                                  "tweets_word_pairs.Rds"))
+results_all_df <- readRDS(file.path(tweets_truth_dir, 
+                                    "data", 
+                                    "processed_data",
+                                    "word_before_landmark_word_data",
+                                    "tweets_word_pairs.Rds"))
 
 results_all_df <- results_all_df %>%
   filter(word1or2_landmark_N >= 30) %>%

@@ -36,6 +36,18 @@ N_days <- seq(from = tweets$created_at_nairobitime %>% min() %>% as.Date(),
               by=1)
 sum(tweets_crash$geocoded) / length(N_days)
 
+## Clustered 
+tweets$accident_truth %>% sum()
+
+tweets_cl1 <- tweets[!is.na(tweets$crash_cluster_id_v1),]
+tweets_cl2 <- tweets[!is.na(tweets$crash_cluster_id_v2),]
+
+# Proportion of tweets clustered with 1 other tweet
+(tweets_cl1$crash_cluster_id_v1 %>% table %>% table()) / 
+  nrow(tweets_cl1) 
+
+(tweets_cl2$crash_cluster_id_v2 %>% table %>% table()) / 
+  nrow(tweets_cl2)
 
 # ** 2. Crash Level ------------------------------------------------------------
 
@@ -57,5 +69,11 @@ prop_cluster_half_crashes
 
 # km distance (max cluster size is 300 meters)
 N_cluster_half_crashes*300/1000 #km
+
+## Percent with >=2 crashes
+mean(crash_clusters$N_crashes >= 2)
+
+## Number with 10 or more crashes
+sum(crash_clusters$N_crashes >= 10)
 
 
