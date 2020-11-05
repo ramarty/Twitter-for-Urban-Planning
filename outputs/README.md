@@ -1,3 +1,3 @@
-# Smart and Safe Kenyan Transport - smarTTrans
+# Outputs
 
-## Algorithm Technical Paper
+The `results.tex` files compiles all the tables and figures.

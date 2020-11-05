@@ -2,6 +2,12 @@
 
 ## DataWork
 
+### Master script
+
+* `_master.R`: Is the main master script for the project.
+
+### Folder Description
+
 * __gadm:__ Administrative boundaries
 * __geonames:__ Place names, types and locations from geonames. Used in landmark gazetteer.
 * __google_places:__ Place names, types and locations from Google Places API. Used in landmark gazetteer.

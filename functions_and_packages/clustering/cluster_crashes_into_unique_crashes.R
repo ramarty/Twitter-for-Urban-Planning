@@ -1,4 +1,4 @@
-# Function to Cluster Crashes
+# Function to Cluster Crash Reports
 
 # ***** Helper Functions -------------------------------------------------------
 

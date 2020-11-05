@@ -1,4 +1,4 @@
-# Function to CLuster Unique Crashes into Crash 
+# Function to CLuster Unique Crashes into Crash Clusters
 
 create_crash_clusters <- function(crashes_df,
                                   lat_var,

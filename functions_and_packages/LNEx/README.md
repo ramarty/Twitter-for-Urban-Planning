@@ -1,3 +1,7 @@
+DOWNLOADED FROM HERE:
+https://github.com/halolimat/LNEx
+
+
 <!-- ###########################################################################
 Copyright 2017 Hussein S. Al-Olimat, hussein@knoesis.org
 
@@ -89,16 +93,16 @@ This work is licensed under AGPL-3.0 and CreativesForGood licenses. A copy of th
 
 <p float="left">
   <img src="https://upload.wikimedia.org/wikipedia/commons/0/06/AGPLv3_Logo.svg" alt="GPLv3 Logo" width="70" />
-  <img src="https://github.com/halolimat/CreativesForGoodLicense/raw/master/CreativesForGoodLogo2.png" alt="CreativesForGood Logo" width="120" style="margin-left: 10px;" /> 
+  <img src="https://github.com/halolimat/CreativesForGoodLicense/raw/master/CreativesForGoodLogo2.png" alt="CreativesForGood Logo" width="120" style="margin-left: 10px;" />
 </p>
 
 ## Citing ##
 
 If you do make use of LNEx or any of its components please cite the following publication:
 
-    Hussein S. Al-Olimat, Krishnaprasad Thirunarayan, Valerie Shalin, and Amit Sheth. 2018. 
-    Location Name Extraction from Targeted Text Streams using Gazetteer-based Statistical Language Models. 
-    In Proceedings of the 27th International Conference on Computational Linguistics (COLING 2018), 
+    Hussein S. Al-Olimat, Krishnaprasad Thirunarayan, Valerie Shalin, and Amit Sheth. 2018.
+    Location Name Extraction from Targeted Text Streams using Gazetteer-based Statistical Language Models.
+    In Proceedings of the 27th International Conference on Computational Linguistics (COLING 2018),
     pages 1986–1997. Association for Computational Linguistics.
 
     @InProceedings{C18-1169,
