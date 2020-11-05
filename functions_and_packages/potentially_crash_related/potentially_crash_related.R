@@ -11,6 +11,7 @@ fuzzy_match <- function(tweet, words, maxDist){
 }
 
 class_potnt_crash <- function(text){
+  # Determine if a tweet is potentially accident related
   
   text_df <- text %>%
     as.data.frame() %>%
