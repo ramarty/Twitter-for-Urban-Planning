@@ -71,6 +71,9 @@
 # CSS
 !/**/*.css
 
+# Png
+!/**/*.png
+
 # Docker
 !/**/*.yml
 !/**/docker/*
