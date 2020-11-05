@@ -1,7 +1,5 @@
 # Cluster Tweets
 
-library(dplyr)
-
 # Load Tweets ------------------------------------------------------------------
 tweets_all <- readRDS(file.path(tweets_all_dir, "data", "processed_data", "tweets_classified_geoparsed.Rds"))
 
