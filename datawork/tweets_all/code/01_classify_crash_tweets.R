@@ -1,9 +1,7 @@
-# Add Truth Data to Tweets
-
-SIMPLE_SEARCH <- FALSE
+# Classify Tweets
 
 # Load Tweets ------------------------------------------------------------------
-tweets_all <- readRDS(file.path(data_tweets_dir, "raw_data", "tweets.Rds"))
+tweets_all <- readRDS(file.path(tweets_all_dir, "data", "raw_data", "tweets.Rds"))
 
 #### Clean Tweets
 tweets_all$text <- tweets_all$text %>% as.character()
@@ -31,12 +29,14 @@ tweets_all$text <- tweets_all$text %>%
 
 # Implement SVM Model ----------------------------------------------------------
 #### Load Model
-model <- readRDS(file.path(data_tweets_classresults_dir, 
-                         "tweet_classification_best_model.Rds"))
+model <- readRDS(file.path(tweets_classif_dir,
+                           "model",
+                           "tweet_classification_best_model.Rds"))
 
 #### Model Parameters
-model_params <- readRDS(file.path(data_tweets_classresults_dir, 
-                              "tweet_classification_best_model_parameters.Rds"))
+model_params <- readRDS(file.path(tweets_classif_dir,
+                                  "model",
+                                  "tweet_classification_best_model_parameters.Rds"))
 
 # Dfm --------------------------------------------------------------------------
 tweets_all <- tweets_all %>%
@@ -56,7 +56,7 @@ tweets_all$potentially_accident_related <- class_potnt_crash(tweets_all$tweet)
 tweets_all$crash_tweet_algorithm[tweets_all$potentially_accident_related %in% F] <- F
 
 # Export -----------------------------------------------------------------------
-saveRDS(tweets_all, file.path(data_tweets_dir, "processed_data", "tweets_classified.Rds"))
+saveRDS(tweets_all, file.path(tweets_all_dir, "data", "processed_data", "tweets_classified.Rds"))
 
 
 

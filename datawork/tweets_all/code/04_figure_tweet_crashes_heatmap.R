@@ -2,23 +2,32 @@
 
 # Load Data --------------------------------------------------------------------
 ## Crashes - All
-crashes_all_df   <- readRDS(file.path(data_tweets_dir, "processed_data", "tweets_classified_geoparsed_uniquecrashes.Rds"))
+crashes_all_df   <- readRDS(file.path(tweets_all_dir, "data", "processed_data", "tweets_classified_geoparsed_uniquecrashes.Rds"))
 coordinates(crashes_all_df) <- ~longitude+latitude
 crs(crashes_all_df) <- CRS("+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
 crashes_all_df$N <- 1
 
 ## Crashes - Truth
-crashes_truth_df   <- readRDS(file.path(data_tweets_dir, "processed_data", "truth_tweets_classified_geoparsed_uniquecrashes.Rds"))
+crashes_truth_df   <- readRDS(file.path(tweets_truth_dir, "data", "processed_data", "crash_cluster_analysis", "tweets_truth_uniquecrash.Rds"))
+
+# polygon to point
+coords <- crashes_truth_df %>% 
+  coordinates() %>% 
+  as.data.frame() %>% 
+  dplyr::rename(longitude = V1,
+                latitude = V2) 
+crashes_truth_df <- bind_cols(crashes_truth_df@data, coords)
+
 coordinates(crashes_truth_df) <- ~longitude+latitude
 crs(crashes_truth_df) <- CRS("+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
 crashes_truth_df$N <- 1
 
 ## Nairobi
-nairobi <- readRDS(file.path(data_gadm_dir, "gadm36_KEN_1_sp.rds"))
+nairobi <- readRDS(file.path(gadm_dir, "data", "gadm36_KEN_1_sp.rds"))
 nairobi <- nairobi[nairobi$NAME_1 %in% "Nairobi",]
 
 ## OSM
-osm <- readRDS(file.path(data_roadgaz_dir, "raw_data", "gis_osm_roads_free_1_nairobi.Rds"))
+osm <- readRDS(file.path(osm_dir, "data", "processed_data", "geofabrik_download_20190317_nairobi", "gis_osm_roads_free_1_nairobi.Rds"))
 
 # Restrict to Nairobi ----------------------------------------------------------
 crashes_all_df   <- crashes_all_df[over(crashes_all_df,     nairobi)$NAME_1 %in% "Nairobi",]
@@ -38,8 +47,8 @@ r_all <- raster(ext = extent(nairobi),
                 resolution = res/111.12)
 
 r_truth <- raster(ext = extent(nairobi),
-                   crs = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
-                   resolution = res/111.12)
+                  crs = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
+                  resolution = res/111.12)
 
 #### Rasterize
 r_all_values <- rasterize(crashes_all_df, r_all, "N", fun = "sum")
@@ -156,8 +165,8 @@ p_truth <- ggplot() +
                                   hjust = 0.5,
                                   face = "bold"), 
         plot.subtitle = element_text(color = "white",
-                                  hjust = 0.5,
-                                  face = "bold"), 
+                                     hjust = 0.5,
+                                     face = "bold"), 
         legend.position="bottom",
         legend.text = element_text(color = "white",size=12)) +
   bgcolor("black") +

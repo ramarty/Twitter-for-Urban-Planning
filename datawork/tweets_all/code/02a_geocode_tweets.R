@@ -5,7 +5,7 @@ chunk_size <- 10
 OVERWRITE_FILE <- F
 
 # Load Tweets ------------------------------------------------------------------
-tweets_df <- readRDS(file.path(data_tweets_dir, "processed_data", "tweets_classified.Rds"))
+tweets_df <- readRDS(file.path(tweets_all_dir, "data", "processed_data", "tweets_classified.Rds"))
 
 tweets_df <- tweets_df %>%
   filter(crash_tweet_algorithm %in% T) %>%
@@ -15,9 +15,9 @@ tweets_df <- tweets_df[tweets_df$name %in% "Ma3Route",]
 
 # Algorithm Inputs/Parameters --------------------------------------------------
 ## Gazetteers
-roads <- readRDS(file.path(data_roadgaz_dir, "processed_data", "osm_roads_aug.Rds"))
-landmarks <- readRDS(file.path(data_landmarkgaz_dir, "processed_data", "landmark_gazetter_aug.Rds"))
-estates <- readRDS(file.path(data_estates_dir, "nairobi_estates.Rds"))
+roads <- readRDS(file.path(osm_dir, "data", "processed_data", "roads", "osm_roads_aug.Rds"))
+landmarks <- readRDS(file.path(landmarkgaz_dir, "data", "gazetteers", "landmark_gazetter_aug.Rds"))
+estates <- readRDS(file.path(estates_dir, "data", "nairobi_estates.Rds"))
 
 prepositions <- list(c("EVENT_WORD after", "EVENT_WORD near", "EVENT_WORD outside", 
                        "EVENT_WORD past", "around", "hapo", "just after", "just before", 
@@ -53,57 +53,6 @@ type_list <- list(c("bus_station","transit_station","stage_added", "stage", "bus
                   c("building"),
                   c("parking"))
 
-
-# landmarks <- readRDS(file.path(dropbox_file_path, "Data", "Twitter", "Tweet Classification Geocoding Algorithm",
-#                                "augmented_gazetteers", "landmarks_aug.Rds"))
-# roads <- readRDS(file.path(dropbox_file_path, "Data", "Twitter", "Tweet Classification Geocoding Algorithm",
-#                            "augmented_gazetteers", "osm_roads_aug.Rds"))
-# 
-# estates <- readRDS(file.path(dropbox_file_path, "Data", "Twitter", "Tweet Classification Geocoding Algorithm", 
-#                              "raw_gazetteers", "nairobi_estates.Rds"))
-# 
-# # TODO: Could separate tier 1: two words then one word (tier two)?? hmmm, maybe not?
-# prepositions <- list(c("EVENT_WORD after", "EVENT_WORD near", "EVENT_WORD outside", "EVENT_WORD past", "around", "hapo", "just after", "just before", "just past", "near", "next to", "opposite", "outside", "past", "you approach",
-#                        "apa", "apo", "hapa", "right after", "right before", "right past", "just before you reach"), # manually adding these
-#                      c("EVENT_WORD at", "before"), # manually adding these
-#                      c("after"),
-#                      c("at",
-#                        "happened at", "at the", "pale"), # manually added
-#                      c("between", "from",
-#                        "btw", "btwn"), # manually added
-#                      c("along", "approach", "in", "on", "opp", "to", "towards", # removed: of (mispelling of "on"?)
-#                        "toward"), # manually added
-#                      c("under", "inbound",
-#                        "into") # manually added
-# )
-# 
-# event <- c("accidents", "accident", "crash", "overturn", "overturned", "collision", "wreck", "pile up", "incident", "hit and run", "hit")
-# junction <- c("intersection", "junction")
-# false_positive <- c("githurai bus", "githurai matatu", 
-#                     "githurai 45 bus", "githurai 45 matatu",
-#                     "city hoppa bus", "hoppa bus",
-#                     "rongai bus", "rongai matatu", "rongai matatus",
-#                     "machakos bus", "machakos minibus", "machakos matatu",
-#                     "at ntsa kenya", # original tweet... check for @ at end?
-#                     "service lane", "star bus",
-#                     "prius", "mpya bus",
-#                     "heading towards") 
-# type_list <- list(c("bus_station","transit_station","stage_added", "stage", "bus_stop"),
-#                   c("mall", "shopping_mall"),
-#                   c("restaurant", "bakery", "cafe"),
-#                   c("building"),
-#                   c("parking"),
-#                   c("furniture_store"),
-#                   c("pharmacy"),
-#                   c("meal_delivery"),
-#                   c("liquor_store"),
-#                   c("movie_theater", "cinema"),
-#                   c("shoe_store"),
-#                   c("jewelry_store"),
-#                   c("hindu_temple", "sikh"),
-#                   c("travel_agency"),
-#                   c("laundry"))
-
 # Locate Crashes ---------------------------------------------------------------
 starts <- seq(from = 1, to = length(tweets_df$tweet), by=chunk_size)
 
@@ -111,7 +60,7 @@ for(start_i in starts){
   
   print(paste(start_i, "-----------------------------------------------------"))
   
-  out_file <- file.path(data_tweets_dir, "processed_data", "tweets_geocoded_chunks",
+  out_file <- file.path(tweets_all_dir, "data", "processed_data", "tweets_geocoded_chunks",
                         paste0("tweets_geocoded_chunk_",start_i,".Rds"))
   
   if(!file.exists(out_file) | OVERWRITE_FILE){

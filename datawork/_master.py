@@ -7,7 +7,7 @@ Created on Tue Jul  2 10:07:05 2019
 
 # Setup -----------------------------------------------------------------------
 # Setup Project Filepath
-project_dir = 'C:/Users/wb521633/Dropbox/World Bank/IEs/smarTTrans Algorithm Technical Paper'
+project_dir = '~/Documents/Github/Twitter-for-Urban-Planning'
 
 # Load Packages
 import json, re

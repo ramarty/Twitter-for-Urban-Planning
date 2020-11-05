@@ -4,8 +4,8 @@ TWITTER_COLOR <- "dodgerblue3"
 
 # Load and Prep Data -----------------------------------------------------------
 ### Load data
-tweets             <- readRDS(file.path(data_tweets_dir, "processed_data", "tweets_classified_geoparsed.Rds"))
-tweets_clustered   <- readRDS(file.path(data_tweets_dir, "processed_data", "tweets_classified_geoparsed_uniquecrashes.Rds"))
+tweets             <- readRDS(file.path(tweets_all_dir, "data", "processed_data", "tweets_classified_geoparsed.Rds"))
+tweets_clustered   <- readRDS(file.path(tweets_all_dir, "data", "processed_data", "tweets_classified_geoparsed_uniquecrashes.Rds"))
 
 ### Subset
 tweets <- tweets[tweets$crash_tweet_algorithm %in% TRUE,]

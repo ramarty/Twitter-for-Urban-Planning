@@ -1,9 +1,9 @@
 # Merge Geolocation
 
 # Load Tweets ------------------------------------------------------------------
-tweets_df <- readRDS(file.path(data_tweets_dir, "processed_data", "tweets_classified.Rds"))
+tweets_df <- readRDS(file.path(tweets_all_dir, "data", "processed_data", "tweets_classified.Rds"))
 
-tweets_alg_geo <- file.path(data_tweets_dir, "processed_data", "tweets_geocoded_chunks") %>%
+tweets_alg_geo <- file.path(tweets_all_dir, "data", "processed_data", "tweets_geocoded_chunks") %>%
   list.files(pattern = "*.Rds", full.names = T) %>%
   lapply(readRDS) %>%
   bind_rows() %>%
@@ -28,7 +28,7 @@ tweets_all_geo <- merge(tweets_all, tweets_alg_geo, by = "status_id_str",
                         all.x = T, all.y = F)
 
 # Export -----------------------------------------------------------------------
-saveRDS(tweets_all_geo, file.path(data_tweets_dir, "processed_data", "tweets_classified_geoparsed.Rds"))
+saveRDS(tweets_all_geo, file.path(tweets_all_dir, "data", "processed_data", "tweets_classified_geoparsed.Rds"))
 
 
 

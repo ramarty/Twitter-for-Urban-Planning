@@ -1,8 +1,7 @@
 # Provide Basic Summary Stats from Waze Data
 
 # Tweets -----------------------------------------------------------------------
-tweets <- readRDS(file.path(data_tweets_dir, "raw_data", "tweets.Rds"))
-tweets <- tweets[tweets$name %in% "Ma3Route",]
+tweets <- readRDS(file.path(tweets_all_dir, "data", "raw_data", "tweets.Rds"))
 
 ## Daily Total
 tweets <- tweets %>%
