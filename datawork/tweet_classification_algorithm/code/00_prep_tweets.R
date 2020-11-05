@@ -1,10 +1,7 @@
-# Tweet Classification
-# Classify Tweets as Crash Related or Not
+# Tweet Classification: Classify Tweets as Crash Related or Not
+# Prep Tweets
 
-#### Parameters 
-#K_FOLDS <- 4
-#CHUNK_SIZE <- 300
-#set.seed(42)
+# Clean text of tweet and subset tweets for tweet classification
 
 # Load Data --------------------------------------------------------------------
 truth_data <- readRDS(file.path(tweets_truth_dir, "data", "raw_data", "tweets_truth.Rds"))

@@ -1,4 +1,7 @@
-# Crashmap Algorithm
+# Geoparse Tweets
+# Clean Tweets
+
+# Cleans text of tweets and subsets tweets for geoparsing
 
 # Load Data --------------------------------------------------------------------
 tweets_df <- readRDS(file.path(tweets_all_dir, "data", "raw_data", "tweets.Rds"))

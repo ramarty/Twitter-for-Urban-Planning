@@ -1,4 +1,7 @@
-# Explore Results
+# Tweet Classification: Classify Tweets as Crash Related or Not
+# Clean Results
+
+# Clean grid search results. Append NB and SVM results and aggregate kfolds.
 
 # Load Data --------------------------------------------------------------------
 results_nb_df <- read.csv(file.path(tweets_classif_dir, "results", "tweet_classification_results_nb.csv"))

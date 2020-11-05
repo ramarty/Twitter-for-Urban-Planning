@@ -1,11 +1,14 @@
-# Tweet Classification
-# Classify Tweets as Crash Related or Not
+# Tweet Classification: Classify Tweets as Crash Related or Not
+# Grid Search
+
+# Perform grid search testing algorithms and parameters for predicting
+# whether a tweet is crash related or not
 
 #### Parameters 
 K_FOLDS <- 4
 set.seed(42)
 
-RUN_NB <- T
+RUN_NB  <- T
 RUN_SVM <- T
 
 # Load Data --------------------------------------------------------------------
@@ -20,14 +23,14 @@ truth_data <- truth_data[sample(1:nrow(truth_data)),]
 k_fold <- rep(1:K_FOLDS, length.out = nrow(truth_data)) 
 
 # Parameters -------------------------------------------------------------------
-# Create dataframe of parameters to try. First create master parameter
-# dataframe, then filter out for relevant parameters for SVM and NB
+# Create dataframe of parameters. First create master parameter dataframe, 
+# then filter out for relevant parameters for SVM and NB
 
 #### Parameter List
 ngram_max <- 1:3
 prior <- c("uniform", "docfreq", "termfreq")
 trim <- c(0, 0.01, 0.05) 
-tweet_var <- c("tweet") # "tweet_aug"
+tweet_var <- c("tweet") 
 tfid <- c(T, F)
 svm_cost <- c(0.5, 1, 2, 10, 100, 1000)
 

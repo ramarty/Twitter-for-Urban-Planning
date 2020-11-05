@@ -1,4 +1,8 @@
+# Tweet Classification: Classify Tweets as Crash Related or Not
 # Save Best Model
+
+# Check which model and parameters performed best. Train and save that model
+# for later use.
 
 # Load Results -----------------------------------------------------------------
 results_df <- read.csv(file.path(tweets_classif_dir,

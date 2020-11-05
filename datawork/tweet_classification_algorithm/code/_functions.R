@@ -1,3 +1,6 @@
+# Tweet Classification: Classify Tweets as Crash Related or Not
+# Functions
+
 # Calculate Performance --------------------------------------------------------
 calc_performance <- function(pred, truth){
   # Given vectors of predictions and truth data, calculate recall, precision,
@@ -36,6 +39,9 @@ prep_dfm <- function(df, params_df){
 
 # Grid Search: DFM Based Input -------------------------------------------------
 grid_search_with_dfm <- function(params, model_type){
+  # Given a dataframe of parameters and model type, performs a grid search
+  # on the parameters. Outputs dataframe with results (recall, precision,
+  # accuracy and f1), along with associated parameters.
   
   # Loop through parameters - - - - - - - - - - - - - - - - - - - - - - - - - - 
   results_all_df <- lapply(params$model, function(model_i){
@@ -78,14 +84,6 @@ grid_search_with_dfm <- function(params, model_type){
     # Add parameters to results dataframe - - - - - - - - - - - - - - - - - - - -
     for(var in names(params_i)) results_df[[var]] <- params_i[[var]]
     results_df$model_type <- model_type
-    
-    # saveRDS(results_df,
-    #         file.path(dropbox_file_path, "Data", "Twitter",
-    #                   "Tweet Classification Geocoding Algorithm",
-    #                   "tweet_classification",
-    #                   "results",
-    #                   "individual_files",
-    #                   paste0(model_type, model_i, ".Rds")))
     
     return(results_df)
   }) %>%

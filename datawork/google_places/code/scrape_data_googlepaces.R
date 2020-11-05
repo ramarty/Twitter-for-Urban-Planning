@@ -27,6 +27,7 @@ nairobi.grid <- nairobi.grid@data
 list.to.str <- function(list) paste(list, collapse=";")
 
 api.result.to.df <- function(rd){
+  # Function to convert Google Places API result into dataframe
   rd.df <- as.data.frame(rd$results$geometry$location)
   rd.df$northeast.lat <- rd$results$geometry$viewport$northeast$lat
   rd.df$northeast.lng <- rd$results$geometry$viewport$northeast$lng

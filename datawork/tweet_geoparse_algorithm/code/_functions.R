@@ -1,3 +1,6 @@
+# Geoparse Tweets
+# Clean Tweets
+
 spread_coords <- function(df,
                           var,
                           crs_in = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
@@ -64,10 +67,6 @@ prep_alg_data <- function(df, type_name){
   df$dist_closest_crash_word[is.na(df$dist_closest_crash_word) | df$dist_closest_crash_word %in% "NA"] <- "none"
   
   df$rm <- F
-  #df$rm[grepl("tried_to_snapped_to_road_but_road_too_far", df$how_determined_landmark_raw)] <- T
-  #df$rm[grepl("multiple_landmarks_choose_closest_crashword|tier_5|tier_6", df$how_determined_landmark_raw) &
-  #                    df$dist_closest_crash_word_raw %in% as.character(3:26)] <- T
-  
   df$rm[grepl("tried_to_snapped_to_road_but_road_too_far|tried_restricting_landmarks_close_to_road_but_none_close|tier_5", df$how_determined_landmark)] <- T
   df$rm[grepl("restrict_by_type_shoe_store|restrict_by_type_liquor_store|multiple_landmarks_tried_restrict_to_near_roads_but_none_near_road|crashword_tier_7_preposition_intersection|crashword_tier_crashword_prepos_tier_4preposition_landmark", df$how_determined_landmark)] <- T
   df$rm[grepl("multiple_landmarks_choose_closest_crashword", df$how_determined_landmark) &

@@ -1,6 +1,13 @@
-# Crashmap Algorithm
+# Geoparse Tweets
+# Calculate precision and recall
+
+# Loads dataframes of estimated locations from the algorithm, using different
+# gazetteers. Calculates precision and recall:
+#   (1) of the one location outputted by the algorithm
+#   (2) of any landmark location found by the algoruthm
 
 # 1. Tweets to Long ============================================================
+
 ## Load Tweets
 df_aug          <- readRDS(file.path(tweets_geoparse_dir, "processed_data", "tweet_geoparse_gaz_aug.Rds"))
 df_raw          <- readRDS(file.path(tweets_geoparse_dir, "processed_data", "tweet_geoparse_gaz_raw.Rds"))

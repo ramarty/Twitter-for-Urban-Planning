@@ -1,6 +1,9 @@
-# Table of Results
+# Tweet Classification: Classify Tweets as Crash Related or Not
+# Results Table
 
-ROUND <- 3
+# Create table of results
+
+ROUND <- 3 # Amount to round numbers
 
 # Load Data --------------------------------------------------------------------
 results_df <- read.csv(file.path(tweets_classif_dir,
@@ -9,8 +12,8 @@ results_df <- read.csv(file.path(tweets_classif_dir,
                        stringsAsFactors = F)
 
 # Table ------------------------------------------------------------------------
+## Subset to select parameters
 results_sub <- results_df %>%
-  #filter(model_type %in% c("nb", "svm")) %>%
   filter(prior %in% "uniform") %>%
   filter(trim %in% 0) %>%
   filter(is.na(tfid) | 
