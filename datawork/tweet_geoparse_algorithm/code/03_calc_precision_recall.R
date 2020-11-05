@@ -6,7 +6,22 @@
 #   (1) of the one location outputted by the algorithm
 #   (2) of any landmark location found by the algoruthm
 
+# Outline
+# 1. Tweets to Long: each row is a location found, using any location found by algorithm
+# 2. Load and prep LNEx
+# 3. Load truth tweets
+# 4. Append data from our algorithm and LNEX
+# 5. Calculate distance to truth
+# 6. Collapse to tweet level
+# 7. Tweet level precision and recall
+# 8. Cluster level precision and recall
+# 9. Export results
+
 # 1. Tweets to Long ============================================================
+# For each tweet, the algorithm gives: (1) the estimated crash location and (2)
+# all locations found by the algorithm. Creates a "long" dataframe where each
+# row is any location found by algorithm. This is needed in order to estimate
+# the minimum distance to any location found.
 
 ## Load Tweets
 df_aug          <- readRDS(file.path(tweets_geoparse_dir, "processed_data", "tweet_geoparse_gaz_aug.Rds"))
@@ -77,7 +92,11 @@ df_all_twt <- df_all %>%
                    lon_truth = lon_truth[1]) %>%
   ungroup()
 
-# 7. Tweet level: precision/recall ----------------------------------------------
+# 7. Tweet level: precision/recall ---------------------------------------------
+# Calculate precision and recall on (1) algorithm finding any location near the
+# truth crash location and (2) estimated crash location determined by algorithm
+# near the true crash location
+
 twt_prec_rec_df <- df_all_twt %>%
   group_by(type) %>%
   summarise(alg_precision = mean(alg_dist <= 500, na.rm=T),
@@ -86,7 +105,10 @@ twt_prec_rec_df <- df_all_twt %>%
             alg_recall = sum(alg_dist <= 500, na.rm=T) / n(),
             anyloc_recall = sum(anyloc_dist <= 500, na.rm=T) / n())
 
-# 8. Cluster Level: Precision/Recall ----------------------------------------------
+# 8. Cluster Level: Precision/Recall -------------------------------------------
+# Cluster tweets to individual crashes (more than one tweet can refer to the 
+# same crash), then estimate precision and recall at the crash level.
+
 clstr_prec_rec_df <- lapply(unique(df_all_twt$type), 
                             calc_cluster_results, 
                             df_all_twt, 
