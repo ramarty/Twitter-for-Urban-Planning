@@ -1,11 +1,21 @@
 # Geoparse Tweets
-# Clean Tweets
+# Functions
 
 spread_coords <- function(df,
                           var,
                           crs_in = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
                           crs_out){
-  # From a string of coordinates separated by a semicolon, converts to long format
+  # From a string of coordinates separated by a semicolon, converts to long format.
+  # The algorithm output includes a variable of all locations found. The variable is
+  # structured as coordinates, separated by a semicolon. So locations -1.1,10.1
+  # and -3.1,11.1 would be written as: -1.1,10.1;-3.1,11.1 in the variable.
+  # This function splits the coordinates and creates a dataframe with a row
+  # for each location found.
+  # PARAMS
+  # df: Dataframe
+  # var: Name of variable with coordinates in dataframe
+  # crs_in: Coordinate reference system of coordinates
+  # crs_out: Coordinate reference system to transform coordinates to
   
   alg_coords <- df[[var]] %>% 
     as.character() %>%
@@ -32,8 +42,10 @@ spread_coords <- function(df,
   
   alg_coords$lat <- alg_coords$lat %>% as.numeric()
   alg_coords$lon <- alg_coords$lon %>% as.numeric()
+  
   coordinates(alg_coords) <- ~lon+lat
   crs(alg_coords) <- CRS(crs_in)
+  
   alg_coords <- alg_coords %>% spTransform(CRS(crs_out)) %>% as.data.frame()
   alg_coords <- alg_coords %>%
     dplyr::select(status_id_str, lat, lon)
@@ -99,6 +111,14 @@ reproj_coords <- function(df,
                           lon_var,
                           crs_in = "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
                           crs_out = "+init=epsg:21037"){
+  # Reprojects coordinates in a dataframe. Accounts for cases where the
+  # lat/lon vars may be NA for some observations.
+  # PARAMS
+  # df: Dataframe
+  # lat_var: Name of latitude variable
+  # lon_var: Name of longitude variable
+  # crs_in: Coordinate reference system of coordinates
+  # crs_out: Coordinate reference system to project to
   
   #### Prep Df
   df$uid <- 1:nrow(df)
@@ -108,8 +128,8 @@ reproj_coords <- function(df,
   df_coords$lat_temp <- df[[lat_var]]
   df_coords$lon_temp <- df[[lon_var]]
   
-  df_coords <- df_coords[,]
-  df_coords <- df_coords[,]
+  #df_coords <- df_coords[,]
+  #df_coords <- df_coords[,]
   
   df_coords <- df_coords %>%
     dplyr::filter(!is.na(df_coords$lat_temp),

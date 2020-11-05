@@ -1,7 +1,7 @@
 # Geoparse Tweets
 # Table for supplementary information
 
-ROUND <- 3
+ROUND <- 3 # number of decimal places to round to
 
 # Load Data --------------------------------------------------------------------
 results_df <- readRDS(file.path(tweets_geoparse_dir, "results", "tweet_geoparse_results.Rds"))
