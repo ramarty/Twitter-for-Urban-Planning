@@ -1,39 +1,42 @@
 # Download OSM Data from Overpass API
 
+# Downlaod buildings from OSM Overpass API. Export as dataframe with name, type
+# and coordinates.
+
 # Overpass API: Extraction -----------------------------------------------------
+## Extract Buildings
 buildings <- opq("nairobi, kenya") %>% 
   add_osm_feature(key = 'building') %>%
   osmdata_sf()
+
+## Create separate sp files for points/polgons
 buildings_points <- buildings$osm_points %>% as("Spatial")
 buildings_polygons <- buildings$osm_polygons %>% as("Spatial")
 
-public_transport <- opq ("nairobi, kenya") %>% 
-  add_osm_feature(key = 'bus_stop') %>%
-  osmdata_sf()
-buildings_points <- buildings$osm_points %>% as("Spatial")
-buildings_polygons <- buildings$osm_polygons %>% as("Spatial")
-
-buildings_points <- buildings_points[!is.na(buildings_points$name),]
-buildings_polygons <- buildings_polygons[!is.na(buildings_polygons$name),]
-
-buildings_points$type <- "building"
-buildings_polygons$type <- "building"
-
-buildings_points <- subset(buildings_points, select=c(type, name))
-buildings_polygons <- subset(buildings_polygons, select=c(type, name))
-
-buildings_points <- as.data.frame(buildings_points) %>%
+# To Dataframe -----------------------------------------------------------------
+## Spatial Points to Dataframe
+buildings_points_df <- buildings_points %>% 
+  as.data.frame %>%
   dplyr::rename(lon = coords.x1) %>%
   dplyr::rename(lat = coords.x2)
 
-buildings_polygons_centroid <- gCentroid(buildings_polygons, byid=T) %>% 
+## Spatial Polygon to Dataframe
+buildings_polygons_df <- buildings_polygons %>%
+  gCentroid(byid=T) %>% 
   as.data.frame %>%
   dplyr::rename(lon = x) %>%
-  dplyr::rename(lat = y)
-buildings_polygons <- as.data.frame(buildings_polygons)
-buildings_polygons <- cbind(buildings_polygons, buildings_polygons_centroid)
+  dplyr::rename(lat = y) %>%
+  bind_cols(buildings_polygons@data)
 
-buildings <- bind_rows(buildings_polygons, buildings_points)
+## Append
+buildings_df <- bind_rows(buildings_points_df,
+                          buildings_polygons_df)
+
+# Clean Data -------------------------------------------------------------------
+buildings_df <- buildings_df %>%
+  filter(!is.na(name)) %>%
+  mutate(type = "building") %>%
+  dplyr::select(type, name, lat, lon)
 
 # Export -----------------------------------------------------------------------
-saveRDS(landmark.df, file.path(osm_dir, "data", "processed_data", "overpass_api_extracts", "buildings.Rds"))
+saveRDS(buildings_df, file.path(osm_dir, "data", "processed_data", "overpass_api_extracts", "buildings.Rds"))

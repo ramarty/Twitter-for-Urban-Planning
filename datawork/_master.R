@@ -54,6 +54,7 @@ figures_dir <- file.path(outputs_dir, "figures")
 
 # PARAMETERS ===================================================================
 NAIROBI_UTM_PROJ <- "+init=epsg:21037"
+IGNORE_TIMEINTENSIVE_SCRIPTS <- T
 
 
 # LIBRARIES ====================================================================
@@ -99,16 +100,18 @@ source(file.path(code_gadm_dir, "code", "download_gadm.R"))
 
 # **** 2.1.1 Google Places -----------------------------------------------------
 # Scrape landmarks from Google Places. This code requires and API key.
-source(file.path(code_google_places_dir, "code", "scrape_data_googlepaces.R"))
+#source(file.path(code_google_places_dir, "code", "scrape_data_googlepaces.R"))
 
 
 # **** 2.1.2 OSM -----------------------------------------------------
 # Downloads and preps landmark data from Open Street Maps
 
 # Crop shapefiles to Narobi and save as .Rds file. May take 1 hour to run
-source(file.path(code_osm_dir, "code", "crop_geofabrik_to_nairobi.R"))
+if(IGNORE_TIMEINTENSIVE_SCRIPTS %in% F){
+  source(file.path(code_osm_dir, "code", "crop_geofabrik_to_nairobi.R"))
+}
 
-# Download builings from overpass API. May take 15+ minutes to run
+# Download builings from overpass API. May take 2+ minutes to run
 source(file.path(code_osm_dir, "code", "download_from_overpass_api.R"))
 
 ## Create and clean landmark file from OSM
