@@ -61,7 +61,7 @@ IGNORE_TIMEINTENSIVE_SCRIPTS <- T
 ## Install/Load Package Dependencies
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(tidyverse, purrr, ggplot2, ggpubr, raster, rgeos, rgdal, sp,
-               spatialEco,  RColorBrewer,
+               spatialEco,  RColorBrewer, readxl,
                osmdata, ClusterR, aricode, clusteval, scales, spacyr)
 
 ## Unique Location Extractor
