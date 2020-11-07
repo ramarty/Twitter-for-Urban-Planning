@@ -255,7 +255,7 @@ source(file.path(code_tweets_truth_dir, "code", "crash_cluster_analysis", "03_st
 # Applies tweet classification and geoparse algorithm on tweets and produces
 # a figure and map showing trends.
 
-# Classify crashes tweets
+# Classify crashes tweets. May take 10+ minutes
 source(file.path(code_tweets_all_dir, "code", "01_classify_crash_tweets.R"))
 
 # Geoparse Tweets. This script may take over 48+ hours. 02a runs algorithm
