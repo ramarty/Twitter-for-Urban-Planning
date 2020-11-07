@@ -1,8 +1,11 @@
 # Add Geocodes to Tweets
 
-# Setup 
-chunk_size <- 10
-OVERWRITE_FILE <- F
+#### Parameters
+# Implement algorithm in chunks of tweets. After each chunk, exports data
+chunk_size <- 100
+
+# Checks if tweet/chunk data already processed. If FALSE, then skips
+OVERWRITE_FILE <- FALSE
 
 # Load Tweets ------------------------------------------------------------------
 tweets_df <- readRDS(file.path(tweets_all_dir, "data", "processed_data", "tweets_classified.Rds"))
