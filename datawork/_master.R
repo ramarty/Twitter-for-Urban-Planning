@@ -61,7 +61,7 @@ IGNORE_TIMEINTENSIVE_SCRIPTS <- T
 ## Install/Load Package Dependencies
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(tidyverse, purrr, ggplot2, ggpubr, raster, rgeos, rgdal, sp,
-               spatialEco,  RColorBrewer, readxl,
+               spatialEco,  RColorBrewer, readxl, quanteda, quanteda.textmodels,
                osmdata, ClusterR, aricode, clusteval, scales, spacyr)
 
 ## Unique Location Extractor
@@ -130,8 +130,10 @@ source(file.path(code_geonames_dir, "code", "clean_geonames.R"))
 # Append files from different sources into a raw gazetteer
 source(file.path(code_landmarkgaz_dir, "code", "01_raw_landmark_gazetteer.R"))
 
-# Augment Gazetteer. May take 1+ hours to run
-source(file.path(code_landmarkgaz_dir, "code", "02_augment_landmark_gazetteer.R"))
+# Augment Gazetteer. May take 30+ minutes to run
+if(IGNORE_TIMEINTENSIVE_SCRIPTS %in% F){
+  source(file.path(code_landmarkgaz_dir, "code", "02_augment_landmark_gazetteer.R"))
+}
 
 # ** 2.3 Create road gazetteers ------------------------------------------------
 # Using data from Open Street Maps, creates a clean road gazetteer and an
@@ -143,6 +145,7 @@ source(file.path(code_osm_dir, "code", "roads", "01_create_raw_road_gazetteer.R"
 # Augment roads gazetteer
 source(file.path(code_osm_dir, "code", "roads", "02_augment_road_gazetteer.R"))
 
+
 # 3. Analysis of words that come before landmark words =========================
 # We use the truth tweet data to examine the words that come before the landmark
 # word in the tweet that is used to geocode the tweet. This analysis is used to 
@@ -153,6 +156,8 @@ word_bf_lndmrk_dir <- file.path(code_tweets_truth_dir, "code", "word_before_land
 # Process Data
 source(file.path(word_bf_lndmrk_dir, "01_words_before_location_word.R"))
 source(file.path(word_bf_lndmrk_dir, "02_make_dataset_word_pairs.R"))
+
+# Determine preposition tiers
 source(file.path(word_bf_lndmrk_dir, "03_determine_preposition_tiers.R"))
 
 # [figure_s3.png]
