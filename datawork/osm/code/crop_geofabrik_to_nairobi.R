@@ -20,7 +20,10 @@ for(file in files_shp){
   
   shp <- readOGR(dsn=file.path(osm_dir, "data", "raw_data", "geofabrik_download_20190317"), layer=file)
   shp_nairobi <- crop(shp, nairobi) 
-  saveRDS(shp_nairobi, file.path(osm_dir, "data", "processed_data", "geofabrik_download_20190317_nairobi", paste0(file,"_nairobi.Rds")))
+  
+  saveRDS(shp_nairobi, 
+          file.path(osm_dir, "data", "processed_data", "geofabrik_download_20190317_nairobi", 
+                    paste0(file,"_nairobi.Rds")))
 }
 
 

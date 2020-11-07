@@ -197,7 +197,9 @@ source(file.path(code_tweets_geoparse_dir, "code", "_functions.R"))
 source(file.path(code_tweets_geoparse_dir, "code", "01_clean_tweet_data_for_testing.R"))
 
 # Implement geoparsing across multiple gazetteers. This script may take 24+ hours
-source(file.path(code_tweets_geoparse_dir, "code", "02_implement_algorithm.R"))
+if(IGNORE_TIMEINTENSIVE_SCRIPTS %in% F){
+  source(file.path(code_tweets_geoparse_dir, "code", "02_implement_algorithm.R"))
+}
 
 # Implemnt LNEx algorithm for geoparsing. Script may take 24+ hours.
 # RUN: /datawork/_master.py
@@ -254,8 +256,10 @@ source(file.path(code_tweets_all_dir, "code", "01_classify_crash_tweets.R"))
 # Geoparse Tweets. This script may take over 48+ hours. 02a runs algorithm
 # on 100 tweets at a time then exports those results. 02b appends them together
 # and merges the coordinates with the main tweet dataframe
-source(file.path(code_tweets_all_dir, "code", "02a_geocode_tweets.R"))
-source(file.path(code_tweets_all_dir, "code", "02b_merge_geocodes_to_tweets.R"))
+if(IGNORE_TIMEINTENSIVE_SCRIPTS %in% F){
+  source(file.path(code_tweets_all_dir, "code", "02a_geocode_tweets.R"))
+  source(file.path(code_tweets_all_dir, "code", "02b_merge_geocodes_to_tweets.R"))
+}
 
 # Cluster tweets into uniqe crashes
 source(file.path(code_tweets_all_dir, "code", "03_cluster_tweets.R"))

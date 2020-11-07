@@ -22,7 +22,7 @@ for(subset in c("all", "google", "osm", "geonames")){
                                         quiet=F)
   
   ## Remove list of specific landmarks
-  landmarks_to_rm <- read.csv(file.path(data_landmarkgaz_dir, "raw_data", "landmarks_to_remove.csv"), 
+  landmarks_to_rm <- read.csv(file.path(landmarkgaz_dir, "data", "landmarks_to_remove.csv"), 
                               stringsAsFactors = F)
   
   landmark_gaz_aug <- landmark_gaz_aug[!(landmark_gaz_aug$name %in% landmarks_to_rm$name),]
