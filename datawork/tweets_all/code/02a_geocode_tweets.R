@@ -67,6 +67,11 @@ for(start_i in starts){
                         paste0("tweets_geocoded_chunk_",start_i,".Rds"))
   
   if(!file.exists(out_file) | OVERWRITE_FILE){
+    
+    # Save blank file. If running script on multiple computers/R sessions, others
+    # will skip and go to next.
+    saveRDS(data.frame(NULL), out_file) 
+    
     end_i <- min(start_i + chunk_size - 1, length(tweets_df$tweet))
     
     tweets_df_i <- tweets_df[start_i:end_i,]

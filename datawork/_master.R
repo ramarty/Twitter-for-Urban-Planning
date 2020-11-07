@@ -179,7 +179,7 @@ source(file.path(code_tweets_classif_dir, "code", "_functions.R"))
 source(file.path(code_tweets_classif_dir, "code", "00_prep_tweets.R"))
 
 # Trains Naive Bayes and SVM models using multiple parameters. Exports dataframe
-# of results. Code may take 2+ hours to run
+# of results. Code may take 1+ hours to run
 source(file.path(code_tweets_classif_dir, "code", "01_grid_search.R"))
 
 # Cleans results data
