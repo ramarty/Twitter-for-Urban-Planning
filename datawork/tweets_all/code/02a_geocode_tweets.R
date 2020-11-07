@@ -14,8 +14,6 @@ tweets_df <- tweets_df %>%
   filter(crash_tweet_algorithm %in% T) %>%
   arrange(desc(created_at_nairobitime))
 
-tweets_df <- tweets_df[tweets_df$name %in% "Ma3Route",]
-
 # Algorithm Inputs/Parameters --------------------------------------------------
 ## Gazetteers
 roads <- readRDS(file.path(osm_dir, "data", "processed_data", "roads", "osm_roads_aug.Rds"))
