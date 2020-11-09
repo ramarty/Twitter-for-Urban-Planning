@@ -58,7 +58,7 @@ geonames.df$alternatenames <- geonames.df$alternatenames %>% as.character
 # Add dataset of alternate names  ----------------------------------------------
 make_alternate_names_df <- function(i, df){
   if(df$alternatenames[i] == ""){
-    df.out <- as.data.frame(matrix(nrow=0,ncol=0))
+    df.out <- data.frame(lon = integer()) # blank dataframe
     return(df.out)
   } else{
     alt_names <- strsplit(df$alternatenames[i],",")[[1]] %>% as.data.frame
@@ -75,7 +75,7 @@ make_alternate_names_df <- function(i, df){
   }
 }
 
-geonames_alt_df <- lapply(1:nrow(geonames.df), make_alternate_names_df,geonames.df) %>% bind_rows
+geonames_alt_df <- lapply(1:nrow(geonames.df), make_alternate_names_df,geonames.df) %>% dplyr::bind_rows()
 geonames.df <- rbind(geonames.df, geonames_alt_df)
 geonames.df <- unique(geonames.df)
 

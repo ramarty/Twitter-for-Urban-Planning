@@ -1,8 +1,11 @@
 # Add Geocodes to Tweets
 
-# Setup 
-chunk_size <- 10
-OVERWRITE_FILE <- F
+#### Parameters
+# Implement algorithm in chunks of tweets. After each chunk, exports data
+chunk_size <- 100
+
+# Checks if tweet/chunk data already processed. If FALSE, then skips
+OVERWRITE_FILE <- FALSE
 
 # Load Tweets ------------------------------------------------------------------
 tweets_df <- readRDS(file.path(tweets_all_dir, "data", "processed_data", "tweets_classified.Rds"))
@@ -10,8 +13,6 @@ tweets_df <- readRDS(file.path(tweets_all_dir, "data", "processed_data", "tweets
 tweets_df <- tweets_df %>%
   filter(crash_tweet_algorithm %in% T) %>%
   arrange(desc(created_at_nairobitime))
-
-tweets_df <- tweets_df[tweets_df$name %in% "Ma3Route",]
 
 # Algorithm Inputs/Parameters --------------------------------------------------
 ## Gazetteers
@@ -64,6 +65,11 @@ for(start_i in starts){
                         paste0("tweets_geocoded_chunk_",start_i,".Rds"))
   
   if(!file.exists(out_file) | OVERWRITE_FILE){
+    
+    # Save blank file. If running script on multiple computers/R sessions, others
+    # will skip and go to next.
+    saveRDS(data.frame(NULL), out_file) 
+    
     end_i <- min(start_i + chunk_size - 1, length(tweets_df$tweet))
     
     tweets_df_i <- tweets_df[start_i:end_i,]

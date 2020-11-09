@@ -54,13 +54,14 @@ figures_dir <- file.path(outputs_dir, "figures")
 
 # PARAMETERS ===================================================================
 NAIROBI_UTM_PROJ <- "+init=epsg:21037"
+IGNORE_TIMEINTENSIVE_SCRIPTS <- T
 
 
 # LIBRARIES ====================================================================
 ## Install/Load Package Dependencies
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(tidyverse, purrr, ggplot2, ggpubr, raster, rgeos, rgdal, sp,
-               spatialEco,  RColorBrewer,
+               spatialEco,  RColorBrewer, readxl, quanteda, quanteda.textmodels,
                osmdata, ClusterR, aricode, clusteval, scales, spacyr)
 
 ## Unique Location Extractor
@@ -99,16 +100,18 @@ source(file.path(code_gadm_dir, "code", "download_gadm.R"))
 
 # **** 2.1.1 Google Places -----------------------------------------------------
 # Scrape landmarks from Google Places. This code requires and API key.
-source(file.path(code_google_places_dir, "code", "scrape_data_googlepaces.R"))
+#source(file.path(code_google_places_dir, "code", "scrape_data_googlepaces.R"))
 
 
 # **** 2.1.2 OSM -----------------------------------------------------
 # Downloads and preps landmark data from Open Street Maps
 
 # Crop shapefiles to Narobi and save as .Rds file. May take 1 hour to run
-source(file.path(code_osm_dir, "code", "crop_geofabrik_to_nairobi.R"))
+if(IGNORE_TIMEINTENSIVE_SCRIPTS %in% F){
+  source(file.path(code_osm_dir, "code", "crop_geofabrik_to_nairobi.R"))
+}
 
-# Download builings from overpass API. May take 15+ minutes to run
+# Download builings from overpass API. May take 2+ minutes to run
 source(file.path(code_osm_dir, "code", "download_from_overpass_api.R"))
 
 ## Create and clean landmark file from OSM
@@ -127,8 +130,10 @@ source(file.path(code_geonames_dir, "code", "clean_geonames.R"))
 # Append files from different sources into a raw gazetteer
 source(file.path(code_landmarkgaz_dir, "code", "01_raw_landmark_gazetteer.R"))
 
-# Augment Gazetteer. May take 1+ hours to run
-source(file.path(code_landmarkgaz_dir, "code", "02_augment_landmark_gazetteer.R"))
+# Augment Gazetteer. May take 30+ minutes to run
+if(IGNORE_TIMEINTENSIVE_SCRIPTS %in% F){
+  source(file.path(code_landmarkgaz_dir, "code", "02_augment_landmark_gazetteer.R"))
+}
 
 # ** 2.3 Create road gazetteers ------------------------------------------------
 # Using data from Open Street Maps, creates a clean road gazetteer and an
@@ -140,6 +145,7 @@ source(file.path(code_osm_dir, "code", "roads", "01_create_raw_road_gazetteer.R"
 # Augment roads gazetteer
 source(file.path(code_osm_dir, "code", "roads", "02_augment_road_gazetteer.R"))
 
+
 # 3. Analysis of words that come before landmark words =========================
 # We use the truth tweet data to examine the words that come before the landmark
 # word in the tweet that is used to geocode the tweet. This analysis is used to 
@@ -150,6 +156,8 @@ word_bf_lndmrk_dir <- file.path(code_tweets_truth_dir, "code", "word_before_land
 # Process Data
 source(file.path(word_bf_lndmrk_dir, "01_words_before_location_word.R"))
 source(file.path(word_bf_lndmrk_dir, "02_make_dataset_word_pairs.R"))
+
+# Determine preposition tiers
 source(file.path(word_bf_lndmrk_dir, "03_determine_preposition_tiers.R"))
 
 # [figure_s3.png]
@@ -171,7 +179,7 @@ source(file.path(code_tweets_classif_dir, "code", "_functions.R"))
 source(file.path(code_tweets_classif_dir, "code", "00_prep_tweets.R"))
 
 # Trains Naive Bayes and SVM models using multiple parameters. Exports dataframe
-# of results. Code may take 2+ hours to run
+# of results. Code may take 1+ hours to run
 source(file.path(code_tweets_classif_dir, "code", "01_grid_search.R"))
 
 # Cleans results data
@@ -194,7 +202,9 @@ source(file.path(code_tweets_geoparse_dir, "code", "_functions.R"))
 source(file.path(code_tweets_geoparse_dir, "code", "01_clean_tweet_data_for_testing.R"))
 
 # Implement geoparsing across multiple gazetteers. This script may take 24+ hours
-source(file.path(code_tweets_geoparse_dir, "code", "02_implement_algorithm.R"))
+if(IGNORE_TIMEINTENSIVE_SCRIPTS %in% F){
+  source(file.path(code_tweets_geoparse_dir, "code", "02_implement_algorithm.R"))
+}
 
 # Implemnt LNEx algorithm for geoparsing. Script may take 24+ hours.
 # RUN: /datawork/_master.py
@@ -245,14 +255,16 @@ source(file.path(code_tweets_truth_dir, "code", "crash_cluster_analysis", "03_st
 # Applies tweet classification and geoparse algorithm on tweets and produces
 # a figure and map showing trends.
 
-# Classify crashes tweets
+# Classify crashes tweets. May take 10+ minutes
 source(file.path(code_tweets_all_dir, "code", "01_classify_crash_tweets.R"))
 
 # Geoparse Tweets. This script may take over 48+ hours. 02a runs algorithm
 # on 100 tweets at a time then exports those results. 02b appends them together
 # and merges the coordinates with the main tweet dataframe
-source(file.path(code_tweets_all_dir, "code", "02a_geocode_tweets.R"))
-source(file.path(code_tweets_all_dir, "code", "02b_merge_geocodes_to_tweets.R"))
+if(IGNORE_TIMEINTENSIVE_SCRIPTS %in% F){
+  source(file.path(code_tweets_all_dir, "code", "02a_geocode_tweets.R"))
+  source(file.path(code_tweets_all_dir, "code", "02b_merge_geocodes_to_tweets.R"))
+}
 
 # Cluster tweets into uniqe crashes
 source(file.path(code_tweets_all_dir, "code", "03_cluster_tweets.R"))
