@@ -1,9 +1,7 @@
 # Move File from Dropbox to Replication Package Code
 
 # Setup ------------------------------------------------------------------------
-replication_data_path <- file.path(github_file_path, "Replication Code for Outputs", 
-                                   "smarTTrans Algorithm Technical Paper", 
-                                   "datawork")
+replication_data_path <- file.path("~/Dropbox/World Bank/IEs/Twitter for Urban Planning")
 
 # Tweets -----------------------------------------------------------------------
 tweets_df <- readRDS(file.path(dropbox_file_path, "Data", "Twitter", "Tweets All", "FinalData", 
@@ -109,11 +107,11 @@ df_aug_geonames <- list.files(file.path(dropbox_file_path, "Data", "Twitter", "T
                               full.names = T) %>% 
   map_df(readRDS) 
 
-saveRDS(df_aug, file.path(data_tweets_georesults_dir, paste0("tweet_geoparse_gaz_aug.Rds")))
-saveRDS(df_aug_geonames, file.path(data_tweets_georesults_dir, paste0("tweet_geoparse_gaz_aug_geonames.Rds")))
-saveRDS(df_aug_google, file.path(data_tweets_georesults_dir, paste0("tweet_geoparse_gaz_aug_google.Rds")))
-saveRDS(df_aug_osm, file.path(data_tweets_georesults_dir, paste0("tweet_geoparse_gaz_aug_osm.Rds")))
-saveRDS(df_raw, file.path(data_tweets_georesults_dir, paste0("tweet_geoparse_gaz_raw.Rds")))
+saveRDS(df_aug, file.path(replication_data_path, "data", "tweet_geoparse_algorithm", "processed_data", paste0("tweet_geoparse_gaz_aug.Rds")))
+saveRDS(df_aug_geonames, file.path(replication_data_path, "data", "tweet_geoparse_algorithm", "processed_data", paste0("tweet_geoparse_gaz_aug_geonames.Rds")))
+saveRDS(df_aug_google, file.path(replication_data_path, "data", "tweet_geoparse_algorithm", "processed_data", paste0("tweet_geoparse_gaz_aug_google.Rds")))
+saveRDS(df_aug_osm, file.path(replication_data_path, "data", "tweet_geoparse_algorithm", "processed_data", paste0("tweet_geoparse_gaz_aug_osm.Rds")))
+saveRDS(df_raw, file.path(replication_data_path, "data", "tweet_geoparse_algorithm", "processed_data", paste0("tweet_geoparse_gaz_raw.Rds")))
 
 # LNEx Results -----------------------------------------------------------------
 lnex_results <- read.csv(file.path(dropbox_file_path, "Data", "Twitter", "Tweet Classification Geocoding Algorithm", "tweets_geocoded", "lnex_output", "lnex_rawgaz.csv"),

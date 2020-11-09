@@ -54,7 +54,7 @@ df_lnex <- read.csv(file.path(tweets_geoparse_dir, "processed_data", "tweet_geop
   mutate(type = "lnex")
 
 # 3. Load truth tweets ---------------------------------------------------------
-tweets_df <- readRDS(file.path(data_tweets_dir, "processed_data", "tweets_for_geolocation.Rds"))
+tweets_df <- readRDS(file.path(tweets_geoparse_dir, "processed_data", "tweets_for_geolocation.Rds"))
 tweets_df <- tweets_df %>%
   dplyr::select(status_id_str, latitude_truth, longitude_truth, created_at_nairobitime) %>%
   dplyr::rename(lat_truth = latitude_truth,
