@@ -50,7 +50,8 @@ type_list <- list(c("bus_station","transit_station","stage_added", "stage", "bus
                   c("parking"))
 
 # Locate Crashes ---------------------------------------------------------------
-for(gaz_type in c("aug", "aug_geonames", "aug_google", "aug_osm", "raw")){
+# c("aug", "aug_geonames", "aug_google", "aug_osm", "raw")
+for(gaz_type in c("aug_geonames", "aug_osm")){
   
   landmarks <- readRDS(file.path(landmarkgaz_dir, "data", "gazetteers",
                                  paste0("landmark_gazetter_",gaz_type,".Rds")))
