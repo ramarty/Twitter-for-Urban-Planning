@@ -92,9 +92,9 @@ for(gaz_type in c("aug", "aug_geonames", "aug_google", "aug_osm", "raw")){
     dplyr::rename(lon_alg = coords.x1,
                   lat_alg = coords.x2)
   
-  tweets_df <- merge(tweets_df, alg_out_df, by="status_id_str", all.x=T)
+  tweets_alg_df <- merge(tweets_df, alg_out_df, by="status_id_str", all.x=T)
   
   # Export -----------------------------------------------------------------------
-  saveRDS(tweets_df, file.path(tweets_geoparse_dir, "processed_data", paste0("tweet_geoparse_gaz_",gaz_type,".Rds")))
+  saveRDS(tweets_alg_df, file.path(tweets_geoparse_dir, "processed_data", paste0("tweet_geoparse_gaz_",gaz_type,".Rds")))
 }
 
