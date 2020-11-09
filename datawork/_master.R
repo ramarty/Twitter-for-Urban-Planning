@@ -13,10 +13,10 @@
 # FILEPATHS ====================================================================
 
 #### Root file path
-github_dir  <- "~/Documents/Github/Twitter-for-Urban-Planning"
-dropbox_dir <- "~/Dropbox/World Bank/IEs/Twitter for Urban Planning"
-#github_dir  <- "C:/Users/wb521633/Documents/Github/Twitter-for-Urban-Planning"
-#dropbox_dir <- "C:/Users/wb521633/Dropbox/World Bank/IEs/Twitter for Urban Planning"
+#github_dir  <- "~/Documents/Github/Twitter-for-Urban-Planning"
+#dropbox_dir <- "~/Dropbox/World Bank/IEs/Twitter for Urban Planning"
+github_dir  <- "C:/Users/wb521633/Documents/Github/Twitter-for-Urban-Planning"
+dropbox_dir <- "C:/Users/wb521633/Dropbox/World Bank/IEs/Twitter for Urban Planning"
 
 #### Data Paths [Dropbox]
 data_dir                <- file.path(dropbox_dir, "data")
