@@ -61,7 +61,7 @@ for(start_i in starts){
   
   print(paste(start_i, "-----------------------------------------------------"))
   
-  out_file <- file.path(tweets_all_dir, "data", "processed_data", "tweets_geocoded_chunks",
+  out_file <- file.path(tweets_all_dir, "data", "processed_data", "tweets_geocoded_chunks_NEW",
                         paste0("tweets_geocoded_chunk_",start_i,".Rds"))
   
   if(!file.exists(out_file) | OVERWRITE_FILE){
