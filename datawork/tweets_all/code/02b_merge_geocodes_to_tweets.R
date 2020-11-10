@@ -24,7 +24,7 @@ tweets_alg_geo <- tweets_alg_geo[tweets_alg_geo$rm %in% F,]
 tweets_alg_geo$rm <- NULL
 
 #### Merge geocodes with main tweets
-tweets_all_geo <- merge(tweets_all, tweets_alg_geo, by = "status_id_str",
+tweets_all_geo <- merge(tweets_df, tweets_alg_geo, by = "status_id_str",
                         all.x = T, all.y = F)
 
 # Export -----------------------------------------------------------------------

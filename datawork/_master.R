@@ -263,8 +263,9 @@ source(file.path(code_tweets_all_dir, "code", "01_classify_crash_tweets.R"))
 # and merges the coordinates with the main tweet dataframe
 if(IGNORE_TIMEINTENSIVE_SCRIPTS %in% F){
   source(file.path(code_tweets_all_dir, "code", "02a_geocode_tweets.R"))
-  source(file.path(code_tweets_all_dir, "code", "02b_merge_geocodes_to_tweets.R"))
 }
+source(file.path(code_tweets_all_dir, "code", "02b_merge_geocodes_to_tweets.R"))
+
 
 # Cluster tweets into uniqe crashes
 source(file.path(code_tweets_all_dir, "code", "03_cluster_tweets.R"))
@@ -273,16 +274,16 @@ source(file.path(code_tweets_all_dir, "code", "03_cluster_tweets.R"))
 source(file.path(code_tweets_all_dir, "code", "04_create_crash_clusters.R"))
 
 # Figure: trends and map
-source(file.path(code_tweets_all_dir, "code", "04_figure_crash_tweet_trends_map.R"))
+source(file.path(code_tweets_all_dir, "code", "05_figure_crash_tweet_trends_map.R"))
 
 # Figure: truth and full data heatmap
-source(file.path(code_tweets_all_dir, "code", "04_figure_tweet_crashes_heatmap.R"))
+source(file.path(code_tweets_all_dir, "code", "05_figure_tweet_crashes_heatmap.R"))
 
 # Figure: trends in all tweets
-source(file.path(code_tweets_all_dir, "code", "04_figure_tweet_trends.R"))
+source(file.path(code_tweets_all_dir, "code", "05_figure_tweet_trends.R"))
 
 # Tweets Stats
-source(file.path(code_tweets_all_dir, "code", "04_stats.R"))
+source(file.path(code_tweets_all_dir, "code", "05_stats.R"))
 
 
 # 9. Analysis of landmark types ================================================
