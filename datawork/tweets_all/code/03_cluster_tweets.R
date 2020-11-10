@@ -20,7 +20,7 @@ tweets_all_clustered <- cluster_crashes_one_dataset(crashes_df = tweets_all,
                             cluster_id_only=F)
 
 # Add CRS To Dataset -----------------------------------------------------------
-crs(tweets_truth_clustered) <- CRS("+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
+crs(tweets_all_clustered) <- CRS("+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
 
 ## Id
 tweets_all_clustered$crash_id   <- 1:nrow(tweets_all_clustered)
