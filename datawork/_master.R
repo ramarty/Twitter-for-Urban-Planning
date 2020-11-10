@@ -276,16 +276,16 @@ source(file.path(code_tweets_all_dir, "code", "03_cluster_tweets.R"))
 source(file.path(code_tweets_all_dir, "code", "04_create_crash_clusters.R"))
 
 # Figure: trends and map
-source(file.path(code_tweets_all_dir, "code", "04_figure_crash_tweet_trends_map.R"))
+source(file.path(code_tweets_all_dir, "code", "05_figure_crash_tweet_trends_map.R"))
 
 # Figure: truth and full data heatmap
-source(file.path(code_tweets_all_dir, "code", "04_figure_tweet_crashes_heatmap.R"))
+source(file.path(code_tweets_all_dir, "code", "05_figure_tweet_crashes_heatmap.R"))
 
 # Figure: trends in all tweets
-source(file.path(code_tweets_all_dir, "code", "04_figure_tweet_trends.R"))
+source(file.path(code_tweets_all_dir, "code", "05_figure_tweet_trends.R"))
 
 # Tweets Stats
-source(file.path(code_tweets_all_dir, "code", "04_stats.R"))
+source(file.path(code_tweets_all_dir, "code", "05_stats.R"))
 
 
 # 9. Analysis of landmark types ================================================
