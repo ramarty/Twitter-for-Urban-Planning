@@ -13,10 +13,10 @@
 # FILEPATHS ====================================================================
 
 #### Root file path
-#github_dir  <- "~/Documents/Github/Twitter-for-Urban-Planning"
-#dropbox_dir <- "~/Dropbox/World Bank/IEs/Twitter for Urban Planning"
-github_dir  <- "C:/Users/wb521633/Documents/Github/Twitter-for-Urban-Planning"
-dropbox_dir <- "C:/Users/wb521633/Dropbox/World Bank/IEs/Twitter for Urban Planning"
+github_dir  <- "~/Documents/Github/Twitter-for-Urban-Planning"
+dropbox_dir <- "~/Dropbox/World Bank/IEs/Twitter for Urban Planning"
+#github_dir  <- "C:/Users/wb521633/Documents/Github/Twitter-for-Urban-Planning"
+#dropbox_dir <- "C:/Users/wb521633/Dropbox/World Bank/IEs/Twitter for Urban Planning"
 
 #### Data Paths [Dropbox]
 data_dir                <- file.path(dropbox_dir, "data")
@@ -265,8 +265,9 @@ source(file.path(code_tweets_all_dir, "code", "01_classify_crash_tweets.R"))
 # and merges the coordinates with the main tweet dataframe
 if(IGNORE_TIMEINTENSIVE_SCRIPTS %in% F){
   source(file.path(code_tweets_all_dir, "code", "02a_geocode_tweets.R"))
-  source(file.path(code_tweets_all_dir, "code", "02b_merge_geocodes_to_tweets.R"))
 }
+source(file.path(code_tweets_all_dir, "code", "02b_merge_geocodes_to_tweets.R"))
+
 
 # Cluster tweets into uniqe crashes
 source(file.path(code_tweets_all_dir, "code", "03_cluster_tweets.R"))
