@@ -260,7 +260,7 @@ source(file.path(code_tweets_truth_dir, "code", "crash_cluster_analysis", "03_st
 # Classify crashes tweets. May take 10+ minutes
 source(file.path(code_tweets_all_dir, "code", "01_classify_crash_tweets.R"))
 
-# Geoparse Tweets. This script may take over 48+ hours. 02a runs algorithm
+# Geoparse Tweets. This script may take over 96+ hours. 02a runs algorithm
 # on 100 tweets at a time then exports those results. 02b appends them together
 # and merges the coordinates with the main tweet dataframe
 if(IGNORE_TIMEINTENSIVE_SCRIPTS %in% F){
